@@ -14,6 +14,14 @@ def get_sun(request):
         if datetime.datetime.today().strftime('%Y-%m-%d') == date[0]:
                 return JsonResponse(date, safe=False)
 
+def get_server_datetime(request):
+        datetime_obj = datetime.datetime.today()
+        time_dict = {
+        "date":datetime_obj.strftime('%Y-%m-%d'),
+        "time":datetime_obj.strftime('%H:%M'),
+        "timestamp":int(datetime_obj.timestamp()*1000),
+        }
+        return JsonResponse(time_dict)
 
 def home_view(request):
   template = loader.get_template('home.html')

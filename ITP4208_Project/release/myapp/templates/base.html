@@ -1,6 +1,3 @@
-{% comment %} {% include 'include/nav.html' %} {% endcomment %}
-{% comment %} {% include 'include/css.html' %} {% endcomment %}
-{% comment %} {% include 'include/js.html' %} {% endcomment %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html>
@@ -22,7 +19,8 @@
     </style>
 </head>
 
-<body>
+<body onload="draw();">
+    {% load static %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -36,6 +34,7 @@
         const cxk = canv.getContext("2d");
         const high_ground = 50;
         const random_seed = new Date().getTime();
+        var random_init_step = 0;
 
         // getSunTime
         $.get(
@@ -46,10 +45,36 @@
             }
         );
 
-        function fakeRandomNum(max_val, step) {
-            let rem = 895421;
-            let tempSeed = (step + 1) * random_seed % rem;
-            return Math.floor((tempSeed / rem) * max_val)
+        // get server time
+        $.get(
+            "weather/clock/",
+            function (data) {
+                const server_timestamp = data["timestamp"];
+                const client_timestamp = new Date().getTime()
+                const client_time_loss = client_timestamp-server_timestamp
+                $("#timeLoss").html(client_time_loss);
+                console.log("SERVER_TIME:", server_timestamp);
+                console.log("CLIENT_TIME:", client_timestamp);
+                console.log("CLIENT_TIME_LOSS:", client_time_loss);
+            }
+        );
+
+        function fakeRandomNum() {
+            step = ++random_init_step
+            // (seed * 9301 + 49297) % 233280
+            let tempSeed = Math.round(random_seed+step%3);
+            let random_result = tempSeed * 9301 + 49297
+            let rem = random_result % 233280
+            return rem/233280
+        }
+
+        // 傳入 HH:MM 返回 second
+        function format2sec(format_time) {
+            // 小時
+            let hours = parseInt(format_time.slice(0, 2)) * 3600;
+            // 分鐘
+            let second = parseInt(format_time.slice(3, 5)) * 60;
+            return hours + second;
         }
 
         function setCanvasNav() {
@@ -87,7 +112,7 @@
             for (let x_bld = 0; x_bld < canv.width; x_bld += 50) {
                 cxk.beginPath();
                 let max_high_building = canv.height - 500
-                let high_building = fakeRandomNum(max_high_building, x_bld);
+                let high_building = Math.floor(fakeRandomNum() * max_high_building);
                 cxk.rect(x_bld, canv.height - high_ground * 2 - high_building, 100, high_ground + high_building);
                 cxk.closePath();
                 cxk.fillStyle = "#808080";
@@ -110,11 +135,11 @@
             }
         }
 
-        var image = new Image();
+        {% comment %} var image = new Image();
         image.src = "myImage.png";
         image.onload = function () {
             context.drawImage(image, 0, 0);
-        }
+        } {% endcomment %}
 
         // sun/moon
         function drawSun(index) {
@@ -181,8 +206,6 @@
 
 
         function drawcloud(index) {
-            // index=650
-
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
             cxk.arc(index - 80, 120, 50, 0, 2 * Math.PI);
@@ -277,26 +300,22 @@
 
         // 绘制星星
         function drawStars() {
-            // 清除画布
-            cxk.fillStyle = 'black';
-            cxk.fillRect(0, 0, canv.width, canv.height);
-
             // 绘制大量小星星
             for (let i = 0; i < 500; i++) {
                 drawStar(
-                    Math.random() * canv.width,
-                    Math.random() * canv.height,
-                    Math.random() * 1.5,
-                    Math.random()
+                    fakeRandomNum()/1000 * canv.width,
+                    fakeRandomNum()/1000 * canv.height,
+                    fakeRandomNum()/1000 * 1.5,
+                    fakeRandomNum()/1000
                 );
             }
 
             // 绘制少量大星星（更明亮）
             for (let i = 0; i < 20; i++) {
-                const x = Math.random() * canv.width;
-                const y = Math.random() * canv.height;
-                const size = 1 + Math.random() * 2;
-                const brightness = 0.7 + Math.random() * 0.3;
+                const x = fakeRandomNum() * canv.width;
+                const y = fakeRandomNum() * canv.height;
+                const size = 1 + fakeRandomNum() * 2;
+                const brightness = 0.7 + fakeRandomNum() * 0.3;
 
                 drawStar(x, y, size, brightness);
 
@@ -311,8 +330,6 @@
                 const x = Math.random() * canv.width;
                 const y = Math.random() * canv.height;
                 const size = 2 + Math.random() * 3;
-
-                drawShiningStar(x, y, size);
             }
         }
 
@@ -326,7 +343,7 @@
 
         // 绘制星星光晕
         function drawStarGlow(x, y, size, opacity) {
-            const gradient = ctx.createRadialGradient(
+            const gradient = cxk.createRadialGradient(
                 x, y, size * 0.3,
                 x, y, size
             );
@@ -339,77 +356,16 @@
             cxk.fill();
         }
 
-        // 绘制闪烁的星星（带星芒）
-        function drawShiningStar(x, y, size) {
-            // 保存当前绘图状态
-            cxk.save();
-
-            // 移动到星星位置
-            cxk.translate(x, y);
-
-            // 绘制星芒
-            cxk.strokeStyle = `rgba(255, 255, 255, 0.8)`;
-            cxk.lineWidth = 1;
-
-            // 4条主星芒
-            for (let i = 0; i < 4; i++) {
-                cxk.rotate(Math.PI / 4);
-                cxk.beginPath();
-                cxk.moveTo(0, 0);
-                cxk.lineTo(0, size * 3);
-                cxk.stroke();
-            }
-
-            // 4条短星芒（旋转45度）
-            cxk.rotate(Math.PI / 8);
-            for (let i = 0; i < 4; i++) {
-                cxk.rotate(Math.PI / 4);
-                cxk.beginPath();
-                cxk.moveTo(0, 0);
-                cxk.lineTo(0, size * 2);
-                cxk.stroke();
-            }
-
-            // 绘制星星中心
-            cxk.beginPath();
-            cxk.arc(0, 0, size, 0, Math.PI * 2);
-            cxk.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            cxk.fill();
-
-            // 恢复绘图状态
-            cxk.restore();
-
-            // 添加光晕
-            drawStarGlow(x, y, size * 4, 0.2);
-        }
-
-        // 添加星星闪烁动画
-        function animateStars() {
-            // 随机选择一些星星改变亮度
-            cxk.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            cxk.fillRect(0, 0, canv.width, canv.height);
-
-            // 重绘所有星星（部分会随机变化亮度）
-            for (let i = 0; i < 50; i++) {
-                const x = Math.random() * canv.width;
-                const y = Math.random() * canv.height;
-                const size = Math.random() * 2;
-                const brightness = 0.5 + Math.random() * 0.5;
-
-                drawStar(x, y, size, brightness);
-            }
-
-            requestAnimationFrame(animateStars);
-        }
-
-        // 开始动画
-        animateStars();
-
-
-
-
+        //console.log("UP", format2sec($("#sunUp").html()));
+        //console.log("DOWN", format2sec($("#sunDown").html()));
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
+            // Determine day and night
+            
+            format2sec($("#sunUp").html());
+            format2sec($("#sunDown").html());
+
+
             //drawDaySky();
             drawNightSky();
             // getDayTime
@@ -422,10 +378,7 @@
             // drawBld();
             requestAnimationFrame(draw);
         }
-        draw();
-
-
-
+        
 
     </script>
 
@@ -434,6 +387,9 @@
         <div class="container-fluid">
             <table style="margin-right: 50px;">
                 <tr>
+                    <td rowspan=2>
+                        <img src="{% static 'images/sun.png'%}" width="50" height="50" />
+                    </td>
                     <td>
                         <div class="badge text-bg-primary text-wrap" style="width: 6rem;">
                             <span id="sunUp"></span>
@@ -517,7 +473,11 @@
     <div class="container-fluid ">
         {% block content %}
         {% endblock content %}
+        {% include 'include/danmutanchuang.html' %}
     </div>
+
+    {% comment %} ms {% endcomment %}
+    <span id="timeLoss"></span>
 
 </body>
 

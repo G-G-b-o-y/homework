@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path as url
 from django.views.generic import TemplateView
-from myapp.views import ViewModelPost, CreateModelPost, UpdateModelPost, DeleteModelPost, get_sun, home_view
+from myapp.views import ViewModelPost, CreateModelPost, UpdateModelPost, DeleteModelPost, get_sun, home_view, get_server_datetime
 from myapp.register import signup
 from django.contrib.auth import views as auth_views
 urlpatterns = [
@@ -27,8 +27,9 @@ urlpatterns = [
     url(r'^signup/?$', signup, name='signup'),
 
     url(r'^weather/sun/?$', get_sun),
+    url(r'^weather/clock/$', get_server_datetime),
     
-    url(r'^contact/$', TemplateView.as_view(template_name='danmutanchuang.html'), name='contact'),
+    url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^list/$', ViewModelPost.as_view(), name='list'),
     url(r'^create/$', CreateModelPost.as_view(), name='create'),

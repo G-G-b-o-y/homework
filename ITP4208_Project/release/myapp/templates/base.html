@@ -40,7 +40,7 @@
         // getSunTime
         $.get(
             "/weather/sun/",
-            function(data) {
+            function (data) {
                 $("#sunUp").html(data[1]);
                 $("#sunDown").html(data[3]);
             }
@@ -103,7 +103,7 @@
 
         var image = new Image();
         image.src = "myImage.png";
-        image.onload = function() {
+        image.onload = function () {
             context.drawImage(image, 0, 0);
         }
 
@@ -121,22 +121,122 @@
             cxk.fillStyle = "#FF5510";
             cxk.fill();
             cxk.closePath();
+
         }
+
+        function drawcloud(index) {
+            // index=650
+
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index-80, 120, 50, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index, 100, 70, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index+80, 110, 60, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE"
+            cxk.beginPath()
+            cxk.rect(index-90, 136.6, 181, 33)
+            cxk.fill()
+
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index-10, 180, 40, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index+70, 160, 60, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index+150, 170, 50, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white"
+            cxk.beginPath()
+            cxk.rect(index-10, 187, 167, 33)
+            cxk.fill()
+
+        }
+
+        function drawcloud1(index){
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index-80, 100, 50, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index, 80, 70, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE";
+            cxk.beginPath();
+            cxk.arc(index+80, 90, 60, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "#F2EEEE"
+            cxk.beginPath()
+            cxk.rect(index-90, 116.6, 181, 33)
+            cxk.fill()
+
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index-10, 150, 50, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index+70, 140, 60, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index+160, 130, 70, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white";
+            cxk.beginPath();
+            cxk.arc(index+220, 155, 45, 0, 2 * Math.PI);
+            cxk.fill();
+
+            cxk.fillStyle = "white"
+            cxk.beginPath()
+            cxk.rect(index-10, 167, 230, 33)
+            cxk.fill()
+
+        }
+
 
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
             drawSky();
             // getDayTime
-            
-            
-            drawSunMoon(0.9);
+
+            drawSunMoon(0.5);
+            drawcloud(400);
+            drawcloud1(700);
 
             // drawBld();
             requestAnimationFrame(draw);
         }
         draw();
 
-        
+
+
+
     </script>
 
 
@@ -158,9 +258,10 @@
                     </td>
                 </tr>
             </table>
-            
-            
-            <a class="navbar-brand d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" style="--bs-focus-ring-color: rgba(var(--bs-success-rgb), .25)" href="../">HK Weather</a>
+
+
+            <a class="navbar-brand d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2"
+                style="--bs-focus-ring-color: rgba(var(--bs-success-rgb), .25)" href="../">HK Weather</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -213,7 +314,8 @@
                 <!-- IF NOT LOGINED -->
                 {% else %}
                 <span class="p-3">
-                    <button type="button" onclick="window.location.href='../signup'"  class="btn btn-primary">Sign Up</button>
+                    <button type="button" onclick="window.location.href='../signup'" class="btn btn-primary">Sign
+                        Up</button>
                     <button type="button" onclick="window.location.href='../login'" class="btn btn-info">Login</button>
                 </span>
                 {% endif %}

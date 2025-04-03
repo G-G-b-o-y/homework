@@ -64,10 +64,19 @@
 
 
         // Sky
-        function drawSky() {
+        function drawDaySky() {
             var sky = cxk.createLinearGradient(0, 0, 0, canv.height);
             sky.addColorStop(0, "#1CB1FF");
             sky.addColorStop(1, "#8FF6FF");
+            cxk.fillStyle = sky;
+            cxk.fillRect(0, 0, canv.width, canv.height);
+        }
+
+        function drawNightSky() {
+            var sky = cxk.createLinearGradient(0, 0, 0, canv.height);
+            sky.addColorStop(0, "black");
+            sky.addColorStop(0.5, "#747AAC");
+            sky.addColorStop(1, "#CECECE");
             cxk.fillStyle = sky;
             cxk.fillRect(0, 0, canv.width, canv.height);
         }
@@ -108,7 +117,7 @@
         }
 
         // sun/moon
-        function drawSunMoon(index) {
+        function drawSun(index) {
             let x_pos = index * canv.width
             // calculate 
             let sin_x = canv.width / Math.PI;
@@ -124,12 +133,59 @@
 
         }
 
+
+        function drawMoon(index) {
+            let x_pos = index * canv.width
+            // calculate 
+            let sin_x = canv.width / Math.PI;
+            // sin_x equal to max high
+            let control_y_idx = 1 - (sin_x - canv.height) / canv.height;
+            y_pos = Math.abs((sin_x * Math.sin(x_pos / sin_x) * control_y_idx) - canv.height);
+            const centerX = x_pos;
+            const centerY = y_pos;
+            const radius = Math.min(canv.width, canv.height) * 0.2;
+
+            // 绘制发光效果（多层渐变）
+            for (let i = 5; i >= 1; i--) {
+                const glowRadius = radius + i * 15;
+                const gradient = cxk.createRadialGradient(
+                    centerX, centerY, radius * 0.7,
+                    centerX, centerY, glowRadius
+                );
+
+                const opacity = 0.1 / i;
+                gradient.addColorStop(0, `rgba(246, 241, 213, ${opacity})`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                cxk.beginPath();
+                cxk.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
+                cxk.fillStyle = gradient;
+                cxk.fill();
+            }
+
+            // 绘制月球主体
+            const moonGradient = cxk.createRadialGradient(
+                centerX - radius * 0.3, centerY - radius * 0.3, radius * 0.1,
+                centerX, centerY, radius
+            );
+            moonGradient.addColorStop(0, '#F8F8F0');
+            moonGradient.addColorStop(0.6, '#D8D0C0');
+            moonGradient.addColorStop(1, '#A09080');
+
+            cxk.beginPath();
+            cxk.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            cxk.fillStyle = moonGradient;
+            cxk.fill();
+
+        }
+
+
         function drawcloud(index) {
             // index=650
 
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index-80, 120, 50, 0, 2 * Math.PI);
+            cxk.arc(index - 80, 120, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE";
@@ -139,41 +195,41 @@
 
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index+80, 110, 60, 0, 2 * Math.PI);
+            cxk.arc(index + 80, 110, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE"
             cxk.beginPath()
-            cxk.rect(index-90, 136.6, 181, 33)
+            cxk.rect(index - 90, 136.6, 181, 33)
             cxk.fill()
 
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index-10, 180, 40, 0, 2 * Math.PI);
+            cxk.arc(index - 10, 180, 40, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index+70, 160, 60, 0, 2 * Math.PI);
+            cxk.arc(index + 70, 160, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index+150, 170, 50, 0, 2 * Math.PI);
+            cxk.arc(index + 150, 170, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white"
             cxk.beginPath()
-            cxk.rect(index-10, 187, 167, 33)
+            cxk.rect(index - 10, 187, 167, 33)
             cxk.fill()
 
         }
 
-        function drawcloud1(index){
+        function drawcloud1(index) {
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index-80, 100, 50, 0, 2 * Math.PI);
+            cxk.arc(index - 80, 100, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE";
@@ -183,51 +239,185 @@
 
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index+80, 90, 60, 0, 2 * Math.PI);
+            cxk.arc(index + 80, 90, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE"
             cxk.beginPath()
-            cxk.rect(index-90, 116.6, 181, 33)
+            cxk.rect(index - 90, 116.6, 181, 33)
             cxk.fill()
 
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index-10, 150, 50, 0, 2 * Math.PI);
+            cxk.arc(index - 10, 150, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index+70, 140, 60, 0, 2 * Math.PI);
+            cxk.arc(index + 70, 140, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index+160, 130, 70, 0, 2 * Math.PI);
+            cxk.arc(index + 160, 130, 70, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index+220, 155, 45, 0, 2 * Math.PI);
+            cxk.arc(index + 220, 155, 45, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white"
             cxk.beginPath()
-            cxk.rect(index-10, 167, 230, 33)
+            cxk.rect(index - 10, 167, 230, 33)
             cxk.fill()
 
         }
 
+        // 绘制星星
+        function drawStars() {
+            // 清除画布
+            cxk.fillStyle = 'black';
+            cxk.fillRect(0, 0, canv.width, canv.height);
+
+            // 绘制大量小星星
+            for (let i = 0; i < 500; i++) {
+                drawStar(
+                    Math.random() * canv.width,
+                    Math.random() * canv.height,
+                    Math.random() * 1.5,
+                    Math.random()
+                );
+            }
+
+            // 绘制少量大星星（更明亮）
+            for (let i = 0; i < 20; i++) {
+                const x = Math.random() * canv.width;
+                const y = Math.random() * canv.height;
+                const size = 1 + Math.random() * 2;
+                const brightness = 0.7 + Math.random() * 0.3;
+
+                drawStar(x, y, size, brightness);
+
+                // 为大星星添加光晕
+                if (Math.random() > 0.7) {
+                    drawStarGlow(x, y, size * 3, brightness * 0.3);
+                }
+            }
+
+            // 绘制几颗特别亮的星星（带星芒）
+            for (let i = 0; i < 5; i++) {
+                const x = Math.random() * canv.width;
+                const y = Math.random() * canv.height;
+                const size = 2 + Math.random() * 3;
+
+                drawShiningStar(x, y, size);
+            }
+        }
+
+        // 绘制普通星星
+        function drawStar(x, y, size, brightness) {
+            cxk.beginPath();
+            cxk.arc(x, y, size, 0, Math.PI * 2);
+            cxk.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+            cxk.fill();
+        }
+
+        // 绘制星星光晕
+        function drawStarGlow(x, y, size, opacity) {
+            const gradient = ctx.createRadialGradient(
+                x, y, size * 0.3,
+                x, y, size
+            );
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            cxk.beginPath();
+            cxk.arc(x, y, size, 0, Math.PI * 2);
+            cxk.fillStyle = gradient;
+            cxk.fill();
+        }
+
+        // 绘制闪烁的星星（带星芒）
+        function drawShiningStar(x, y, size) {
+            // 保存当前绘图状态
+            cxk.save();
+
+            // 移动到星星位置
+            cxk.translate(x, y);
+
+            // 绘制星芒
+            cxk.strokeStyle = `rgba(255, 255, 255, 0.8)`;
+            cxk.lineWidth = 1;
+
+            // 4条主星芒
+            for (let i = 0; i < 4; i++) {
+                cxk.rotate(Math.PI / 4);
+                cxk.beginPath();
+                cxk.moveTo(0, 0);
+                cxk.lineTo(0, size * 3);
+                cxk.stroke();
+            }
+
+            // 4条短星芒（旋转45度）
+            cxk.rotate(Math.PI / 8);
+            for (let i = 0; i < 4; i++) {
+                cxk.rotate(Math.PI / 4);
+                cxk.beginPath();
+                cxk.moveTo(0, 0);
+                cxk.lineTo(0, size * 2);
+                cxk.stroke();
+            }
+
+            // 绘制星星中心
+            cxk.beginPath();
+            cxk.arc(0, 0, size, 0, Math.PI * 2);
+            cxk.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            cxk.fill();
+
+            // 恢复绘图状态
+            cxk.restore();
+
+            // 添加光晕
+            drawStarGlow(x, y, size * 4, 0.2);
+        }
+
+        // 添加星星闪烁动画
+        function animateStars() {
+            // 随机选择一些星星改变亮度
+            cxk.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            cxk.fillRect(0, 0, canv.width, canv.height);
+
+            // 重绘所有星星（部分会随机变化亮度）
+            for (let i = 0; i < 50; i++) {
+                const x = Math.random() * canv.width;
+                const y = Math.random() * canv.height;
+                const size = Math.random() * 2;
+                const brightness = 0.5 + Math.random() * 0.5;
+
+                drawStar(x, y, size, brightness);
+            }
+
+            requestAnimationFrame(animateStars);
+        }
+
+        // 开始动画
+        animateStars();
+
+
+
 
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
-            drawSky();
+            //drawDaySky();
+            drawNightSky();
             // getDayTime
-
-            drawSunMoon(0.5);
+            drawMoon(0.8);
+            drawSun(0.5);
             drawcloud(400);
             drawcloud1(700);
+            drawStars();
 
             // drawBld();
             requestAnimationFrame(draw);

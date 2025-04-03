@@ -8,19 +8,78 @@
 
 <body>
   {% block content %}
+  <div id="weatherModal"
+    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); padding:20px; border-radius:10px; z-index:1000; width:300px; text-align:center;">
+    <h4 id="weatherTitle"></h4>
+    <p>Rain (mm): <span id="weatherRain"></span></p>
+    <p>Water (%): <span id="weatherHumidity"></span></p>
+    <p>Wind Speed (Km/h): <span id="weatherWind"></span></p>
+    <p style="color:red;" id="weatherAlert"></p>
+    <button onclick="closeModal()"
+      style="margin-top:10px; padding:5px 15px; background:#dc3545; color:white; border:none; border-radius:5px;">关闭</button>
+  </div>
+  <div id="modalMask"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
+  </div>
+
+  <script>
+    function getRandomWeather() {
+      var types = ['Sunny', 'Rainy', 'Cloudy', 'Winy'];
+      var alerts = [
+        "Wear more clothes when it's cold",
+        "Remember to bring an umbrella",
+        "strong ultraviolet rays",
+        "The road is wet and slippery so drive with caution."
+      ];
+      var winds = ['East Wind', 'South Wind', 'West Wind', 'North Wind'];
+
+      return {
+        type: types[Math.floor(Math.random() * types.length)],
+        rain: Math.floor(Math.random() * 50) + 'mm',
+        humidity: Math.floor(Math.random() * 70) + 30 + '%',
+        wind: winds[Math.floor(Math.random() * winds.length)] + (Math.floor(Math.random() * 5) + 1) + '级',
+        alert: alerts[Math.floor(Math.random() * alerts.length)]
+      };
+    }
+
+    function showWeather(district) {
+      var weather = getRandomWeather();
+      const modal = document.getElementById('weatherModal');
+      const mask = document.getElementById('modalMask');
+
+      modal.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 85%)`;
+
+      document.getElementById('weatherTitle').textContent = district + ' - ' + weather.type;
+      document.getElementById('weatherRain').textContent = weather.rain;
+      document.getElementById('weatherHumidity').textContent = weather.humidity;
+      document.getElementById('weatherWind').textContent = weather.wind;
+      document.getElementById('weatherAlert').textContent = weather.alert;
+
+      modal.style.display = 'block';
+      mask.style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('weatherModal').style.display = 'none';
+      document.getElementById('modalMask').style.display = 'none';
+    }
+
+    document.getElementById('modalMask').addEventListener('click', closeModal);
+  </script>
   {% load static %}
   <div class="p-5 rounded">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for loc_name in loc_name_list %}
       <div class="col">
         <div class="card shadow-sm">
-          <img src="{% static 'images/'|add:loc_name.loc_eng|add:'.jpg' %}" alt="germany" class="bd-placeholder-img card-img-top" width="100%" height="225"
-          role="img"/>
+          <img src="{% static 'images/'|add:loc_name.loc_eng|add:'.jpg' %}" alt="germany"
+            class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" />
           <div class="card-body">
-            <p class="card-text">{{ loc_name.loc_chinese }}</p>
+            <p class="card-text">{{ loc_name.loc_eng }}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary"
+                  onclick="showWeather('{{ loc.loc_eng }}')">Weather details</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
               </div>
               <small class="text-body-secondary">9 mins</small>

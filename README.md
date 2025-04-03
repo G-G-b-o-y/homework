@@ -8,7 +8,7 @@
 * 9-day-forecast ✅
 * login/logout ✅
 * diy_UI_cards ❌
-* asset图床
+* asset图床✅
 * weather alert ❌
 * user profiles ❌
 

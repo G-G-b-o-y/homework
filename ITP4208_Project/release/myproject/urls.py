@@ -28,7 +28,7 @@ urlpatterns = [
 
     url(r'^weather/sun/?$', get_sun),
     
-    url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
+    url(r'^contact/$', TemplateView.as_view(template_name='danmutanchuang.html'), name='contact'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^list/$', ViewModelPost.as_view(), name='list'),
     url(r'^create/$', CreateModelPost.as_view(), name='create'),
@@ -39,17 +39,3 @@ urlpatterns = [
 
 # SUM:https://data.weather.gov.hk/weatherAPI/opendata/opendata.php?dataType=SRS&year=2025&rformat=json
 # MOOB:https://data.weather.gov.hk/weatherAPI/opendata/opendata.php?dataType=MRS&year=2025&rformat=json
-
-
-
-
-
-
-
-
-
-
-
-
-
-

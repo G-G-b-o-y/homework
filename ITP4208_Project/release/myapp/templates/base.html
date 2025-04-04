@@ -383,18 +383,20 @@
             cxk.clearRect(0, 0, canv.width, canv.height);
             let day_index = getDayOrNight();
             console.log(day_index);
+            if (day_index < 1) {
+                // Day
+                drawDaySky();
+                drawSun(day_index);
+            } else {
+                // Night
+                drawNightSky();
+                drawStars();
+                drawMoon(day_index-1);
+            }
             
-            drawDaySky();
-            //drawNightSky();
-            // getDayTime
-            // drawMoon(0.8);
-            drawSun(day_index);
-
-            // drawcloud(400);
+            drawcloud(400);
             // drawcloud1(700);
-            // drawStars();
 
-            // drawBld();
             requestAnimationFrame(draw);
         }
         

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{%  block content %}
+    <div class="col-lg-9">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.non_fields_errors }}
+            <div class="fieldWrapper">
+                <label for="{{ form.date.id_for_label }}"> date : </label>
+                {{ form.date | add_class:"form-control" }}
+                {{ form.date.errors }}
+            </div>
+            <div class="fieldWrapper">
+                    <label for="{{ form.minTemp.id_for_label }}"> minTemp : </label>
+                    {{ form.minTemp | add_class:"form-control" }}
+                    {{ form.minTemp.errors }}
+            </div>
+            <div class="fieldWrapper">
+                    <label for="{{ form.maxTemp.id_for_label }}"> maxTemp : </label>
+                    {{ form.maxTemp | add_class:"form-control" }}
+                    {{ form.maxTemp.errors }}
+            </div>
+            <div class="fieldWrapper">
+                    <label for="{{ form.weather_type.id_for_label }}"> weather_type : </label>
+                    {{ form.weather_type | add_class:"form-control" }}
+                    {{ form.weather_type.errors }}
+            </div>
+            <div class="fieldWrapper">
+                    <label for="{{ form.rain_probability.id_for_label }}"> rain_probability : </label>
+                    {{ form.rain_probability | add_class:"form-control" }}
+                    {{ form.rain_probability.errors }}
+            </div>
+            <br>
+            <button type="submit" class="btn btn-info"> CREATE </button>
+            <button type="reset" class="btn btn-info"> RESET </button>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-inner">
+        {% if object_list %}
+        {% for weather in object_list %}
+        <div class="carousel-item active">
+            <img src="http://iph.href.lu/800x600?text={{ weather.date }}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5 class="card-title">{{ weather.date}}</h5>
+                <p class="card-text">{{ weather.minTemp }}℃ ~ {{ weather.maxTemp }}℃</p>
+                <p class="card-text">{{ weather.weather_type }}</p>
+                <p class="card-text">{{ weather.rain_probability}}</p>
+                <a href='{% url "delete" weather.id %}'> DELETE </a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+    
+    
+{% endblock content %}

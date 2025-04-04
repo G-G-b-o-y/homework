@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from .models import ModelPost, Weather_data
+from .models import ModelPost, YearSunUpDown, WeatherData
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.template import loader
@@ -10,7 +10,7 @@ import os
 # Create your views here.
 
 def get_sun(request):
-    for date in Weather_data.get_sun_time():
+    for date in YearSunUpDown.get_sun_time():
         if datetime.datetime.today().strftime('%Y-%m-%d') == date[0]:
                 return JsonResponse(date, safe=False)
 
@@ -94,22 +94,27 @@ def home_view(request):
         ]}
   return HttpResponse(template.render(context, request))
 
+class ViewWeatherData(ListView):
+        queryset = WeatherData.objects.all()
+        template_name = 'days_forecast.html'
 
-
-class ViewModelPost(ListView):
-        queryset = ModelPost.objects.all()
-        template_name = 'list.html'
-
-class CreateModelPost(LoginRequiredMixin, CreateView):
-        login_url = '/login/'
-        model = ModelPost
+class CreateWeatherData(CreateView):
+        model = WeatherData
         fields = '__all__'
-        template_name = 'create_ModelPost_form.html'
+        template_name = 'create_days_forecast.html'
 
         def form_valid(self, form):
                 model = form.save(commit=False)
                 model.save()
-                return HttpResponseRedirect(reverse('list'))
+                return HttpResponseRedirect(reverse('9dayforecast'))
+        
+class DeleteWeatherData(DeleteView):
+        model = WeatherData
+        template_name = 'delete_days_forecast.html'
+
+        def get_success_url(self):
+                return reverse('days_forecast')
+        
                 
 class UpdateModelPost(UpdateView):
         model = ModelPost
@@ -125,12 +130,6 @@ class UpdateModelPost(UpdateView):
                 model.save()
                 return HttpResponseRedirect(reverse('list'))
 
-class DeleteModelPost(DeleteView):
-        model = ModelPost
-        template_name = 'delete_ModelPost_form.html'
-
-        def get_success_url(self):
-                return reverse('list')
 
 
                 

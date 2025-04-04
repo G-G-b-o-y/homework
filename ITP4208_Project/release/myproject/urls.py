@@ -16,28 +16,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path as url
 from django.views.generic import TemplateView
-from myapp.views import ViewModelPost, CreateModelPost, UpdateModelPost, DeleteModelPost, get_sun, home_view, get_server_datetime
+from myapp.views import UpdateModelPost, ViewWeatherData, CreateWeatherData, DeleteWeatherData,get_sun, home_view, get_server_datetime
 from myapp.register import signup
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', home_view, name='home'),
     url(r'^home$', home_view, name='home'),
+    url(r'^clock/$', TemplateView.as_view(template_name='clock.html'), name='contact'),
+    url(r'^9dayforecast/$', ViewWeatherData.as_view(template_name='days_forecast.html'), name='days_forecast'),
+    url(r'^createWeatherData/$', CreateWeatherData.as_view(template_name='create_days_forecast.html'), name='9dayforecast'),
+    url(r'^deleteWeatherData/(?P<pk>\d)/$', DeleteWeatherData.as_view(), name='delete'),
+    
+    url(r'^weather/sun/?$', get_sun),
+    url(r'^weather/clock/$', get_server_datetime),
 
     url(r'^login/?$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/?$', auth_views.LogoutView.as_view(template_name='home.html'), name='logout'),
     url(r'^signup/?$', signup, name='signup'),
-
-    url(r'^clock/$', TemplateView.as_view(template_name='clock.html'), name='contact'),
-
-    url(r'^weather/sun/?$', get_sun),
-    url(r'^weather/clock/$', get_server_datetime),
+    
     
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-    url(r'^list/$', ViewModelPost.as_view(), name='list'),
-    url(r'^create/$', CreateModelPost.as_view(), name='create'),
     url(r'^update/(?P<id>\d)/$', UpdateModelPost.as_view(), name='update'),
-    url(r'^delete/(?P<pk>\d)/$', DeleteModelPost.as_view(), name='delete')
 ]
 
 

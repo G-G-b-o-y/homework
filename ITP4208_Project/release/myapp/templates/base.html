@@ -16,6 +16,14 @@
         body {
             margin-bottom: 20vh;
         }
+
+        var {
+            visibility:hidden;
+        }
+
+        .user-icon {
+            margin-right: 10px;
+        }
     </style>
 </head>
 
@@ -36,7 +44,7 @@
         const random_seed = new Date().getTime();
         var random_init_step = 0;
 
-        // getSunTime
+        // getSunUp&DownTime
         $.get(
             "/weather/sun/",
             function (data) {
@@ -47,7 +55,7 @@
 
         // get server time
         $.get(
-            "weather/clock/",
+            "/weather/clock/",
             function (data) {
                 const server_timestamp = data["timestamp"];
                 const client_timestamp = new Date().getTime()
@@ -356,24 +364,35 @@
             cxk.fill();
         }
 
-        //console.log("UP", format2sec($("#sunUp").html()));
-        //console.log("DOWN", format2sec($("#sunDown").html()));
+        
+        // Determine day and night
+        // Day index > 0 and < 1; Night index > 1 and < 2
+        function getDayOrNight() {
+            let sunUp_sec = format2sec($("#sunUp").html());
+            let sunDown_sec =format2sec($("#sunDown").html());
+            let date = new Date();
+            let h_sec = date.getHours()*3600;
+            let m_sec = date.getMinutes()*60;
+            let today_sec = h_sec+m_sec+date.getSeconds();
+            let day_range = sunDown_sec-sunUp_sec
+            let now = today_sec-sunUp_sec
+            return now/day_range;
+        }
+
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
-            // Determine day and night
+            let day_index = getDayOrNight();
+            console.log(day_index);
             
-            format2sec($("#sunUp").html());
-            format2sec($("#sunDown").html());
-
-
-            //drawDaySky();
-            drawNightSky();
+            drawDaySky();
+            //drawNightSky();
             // getDayTime
-            drawMoon(0.8);
-            drawSun(0.5);
-            drawcloud(400);
-            drawcloud1(700);
-            drawStars();
+            // drawMoon(0.8);
+            drawSun(day_index);
+
+            // drawcloud(400);
+            // drawcloud1(700);
+            // drawStars();
 
             // drawBld();
             requestAnimationFrame(draw);
@@ -392,6 +411,7 @@
                     </td>
                     <td>
                         <div class="badge text-bg-primary text-wrap" style="width: 6rem;">
+                            <span>↑</span>
                             <span id="sunUp"></span>
                         </div>
                     </td>
@@ -399,6 +419,7 @@
                 <tr>
                     <td>
                         <div class="badge text-bg-danger text-wrap" style="width: 6rem;">
+                            <span>↓</span>
                             <span id="sunDown"></span>
                         </div>
                     </td>
@@ -407,7 +428,7 @@
 
 
             <a class="navbar-brand d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2"
-                style="--bs-focus-ring-color: rgba(var(--bs-success-rgb), .25)" href="../">HK Weather</a>
+                style="--bs-focus-ring-color: rgba(var(--bs-success-rgb), .25)" href="/">HK Weather</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -418,10 +439,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../map">Map</a>
+                        <a class="nav-link" href="/clock">Clock</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -440,29 +461,31 @@
                 </ul>
                 <!-- IF LOGINED -->
                 {% if request.user.is_authenticated %}
-                <span class="nav-item dropdown">
+                <span class="nav-item dropdown user-icon">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         {{ request.user }}
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu text-center">
                         <li><a class="dropdown-item" href="#">Profiles</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info">Logout</button>
-                        </form>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-info">Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </span>
 
                 <!-- IF NOT LOGINED -->
                 {% else %}
                 <span class="p-3">
-                    <button type="button" onclick="window.location.href='../signup'" class="btn btn-primary">Sign
+                    <button type="button" onclick="window.location.href='/signup'" class="btn btn-primary">Sign
                         Up</button>
-                    <button type="button" onclick="window.location.href='../login'" class="btn btn-info">Login</button>
+                    <button type="button" onclick="window.location.href='/login'" class="btn btn-info">Login</button>
                 </span>
                 {% endif %}
 
@@ -477,7 +500,7 @@
     </div>
 
     {% comment %} ms {% endcomment %}
-    <span id="timeLoss"></span>
+    <var id="timeLoss"></var>
 
 </body>
 

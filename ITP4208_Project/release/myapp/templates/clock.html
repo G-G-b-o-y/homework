@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        {% block content %}
+        <style>
+            .responsive-heading {
+                font-size: calc(2rem + 3vw);
+                line-height: 1.2;
+            }
+
+            .clock {
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+                font-size: 15vw;
+            }
+            
+        </style>
+        
+            
+        <div class="card text-center">
+            <div class="card-header">
+                <h2>CLOCK (UTC+8)</h2>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <span id="Hours" class="clock"></span>
+                <span class="clock">:</span>
+                <span id="Minutes" class="clock"></span>
+                <span class="clock">:</span>
+                <span id="Seconds" class="clock"></span>
+              </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <span id="Year" class=""></span>
+                <span class="">Year</span>
+                <span id="Month" class=""></span>
+                <span class="">Month</span>
+                <span id="Day" class=""></span>
+                <span class="">Day</span>
+            </div>
+        </div>
+        
+        <script>
+            function text_update() {
+                let client_timestamp = new Date().getTime();
+                let client_time_loss = $("#timeLoss").html();
+                let corrected_time = client_timestamp+Number(client_time_loss)
+                // console.log("CORR_TIME:", corrected_time);
+                var date = new Date(corrected_time);
+                Y = date.getFullYear();
+                M = date.getMonth();
+                D = date.getDate();
+                h = date.getHours().toString().padStart(2,'0');
+                m = date.getMinutes().toString().padStart(2,'0');
+                S = date.getSeconds().toString().padStart(2,'0');
+                $("#Hours").html(h);
+                $("#Minutes").html(m);
+                $("#Seconds").html(S);
+
+                $("#Year").html(Y);
+                $("#Month").html(M);
+                $("#Day").html(D);
+                requestAnimationFrame(text_update);
+            }
+            
+            
+            setTimeout(
+                function() {
+                    text_update();
+                }, 
+                100
+            );
+        </script>
+        {% endblock content %}
+    </body>
+</html>
+

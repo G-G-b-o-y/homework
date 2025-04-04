@@ -382,12 +382,12 @@
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
             let day_index = getDayOrNight();
-            console.log(day_index);
+            // console.log(day_index);
             if (day_index < 1) {
                 // Day
                 drawDaySky();
                 drawSun(day_index);
-            } else {
+            } else if (day_index > 1) {
                 // Night
                 drawNightSky();
                 drawStars();
@@ -400,7 +400,7 @@
             requestAnimationFrame(draw);
         }
         
-
+        
     </script>
 
 

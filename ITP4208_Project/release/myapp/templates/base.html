@@ -22,14 +22,15 @@
         }
 
         .user-icon {
-            margin-right: 10px;
+            margin-right: 10vh;
         }
     </style>
 </head>
 
 <body onload="draw();">
     {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
@@ -43,15 +44,24 @@
         const high_ground = 50;
         const random_seed = new Date().getTime();
         var random_init_step = 0;
+        // Rain particles
+        const rainParticles = [];
+        const rainCount = 200;
+        for (let i = 0; i < rainCount; i++) {
+            rainParticles.push({
+                x: Math.random() * canv.width,
+                y: Math.random() * canv.height,
+                length: 10 + Math.random() * 10,
+                speed: 5 + Math.random() * 5,
+                opacity: 0.1 + Math.random() * 0.4
+            });
+        }
 
-        // getSunUp&DownTime
-        $.get(
-            "/weather/sun/",
-            function (data) {
-                $("#sunUp").html(data[1]);
-                $("#sunDown").html(data[3]);
-            }
-        );
+        // Cloud properties
+        const clouds = [
+            { x: 400, y: 120, speed: 0.5 },
+            { x: 700, y: 100, speed: 0.3 }
+        ];
 
         // get server time
         $.get(
@@ -213,46 +223,46 @@
         }
 
 
-        function drawcloud(index) {
+        function drawcloud(cloud) {
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index - 80, 120, 50, 0, 2 * Math.PI);
+            cxk.arc(cloud.x - 80, cloud.y, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index, 100, 70, 0, 2 * Math.PI);
+            cxk.arc(cloud.x, cloud.y - 20, 70, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE";
             cxk.beginPath();
-            cxk.arc(index + 80, 110, 60, 0, 2 * Math.PI);
+            cxk.arc(cloud.x + 80, cloud.y - 10, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "#F2EEEE"
             cxk.beginPath()
-            cxk.rect(index - 90, 136.6, 181, 33)
+            cxk.rect(cloud.x - 90, cloud.y + 16.6, 181, 33)
             cxk.fill()
 
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index - 10, 180, 40, 0, 2 * Math.PI);
+            cxk.arc(cloud.x - 10, cloud.y + 60, 40, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index + 70, 160, 60, 0, 2 * Math.PI);
+            cxk.arc(cloud.x + 70, cloud.y + 40, 60, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white";
             cxk.beginPath();
-            cxk.arc(index + 150, 170, 50, 0, 2 * Math.PI);
+            cxk.arc(cloud.x + 150, cloud.y + 50, 50, 0, 2 * Math.PI);
             cxk.fill();
 
             cxk.fillStyle = "white"
             cxk.beginPath()
-            cxk.rect(index - 10, 187, 167, 33)
+            cxk.rect(cloud.x - 10, cloud.y + 67, 167, 33)
             cxk.fill()
 
         }
@@ -379,26 +389,86 @@
             return now/day_range;
         }
 
+        // getSunUp&DownTime
+        $.get(
+            "/weather/sun/",
+            function (data) {
+                $("#sunUp").html(data[1]);
+                $("#sunDown").html(data[3]);
+            }
+        );
+
+        function drawRain() {
+            cxk.strokeStyle = "rgba(174, 194, 224, 0.5)";
+            cxk.lineWidth = 1;
+            
+            for (let i = 0; i < rainParticles.length; i++) {
+                const p = rainParticles[i];
+                cxk.beginPath();
+                cxk.moveTo(p.x, p.y);
+                cxk.lineTo(p.x + p.length * 0.3, p.y + p.length);
+                cxk.stroke();
+                
+                // Update position
+                p.y += p.speed;
+                p.x += p.speed * 0.1;
+                
+                // Reset when out of screen
+                if (p.y > canv.height) {
+                    p.y = -p.length;
+                    p.x = Math.random() * canv.width;
+                }
+            }
+        }
+
+        function updateClouds() {
+            for (let i = 0; i < clouds.length; i++) {
+                clouds[i].x += clouds[i].speed;
+                if (clouds[i].x > canv.width + 200) {
+                    clouds[i].x = -200;
+                }
+            }
+        }
+
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
             let day_index = getDayOrNight();
             // console.log(day_index);
-            if (day_index < 1) {
+            if (day_index < 1 && day_index >= 0) {
                 // Day
                 drawDaySky();
                 drawSun(day_index);
+                // Show sun icon
+                $("td img").attr("src", "{% static 'images/sun.png'%}");
+                $(".badge.text-bg-primary span:first").text("☀");
+                $(".badge.text-bg-danger span:first").text("🌑");
             } else if (day_index > 1) {
                 // Night
                 drawNightSky();
                 drawStars();
                 drawMoon(day_index-1);
+                // Show moon icon
+                $("td img").attr("src", "{% static 'images/moon.png'%}");
+                $(".badge.text-bg-primary span:first").text("🌑");
+                $(".badge.text-bg-danger span:first").text("🌕");
+            } else if (day_index < 0) {
+                // MidNight
+                drawNightSky();
+                drawStars();
+                drawMoon(1-Math.abs(day_index));
+                // Show moon icon
+                $("td img").attr("src", "{% static 'images/moon.png'%}");
+                $(".badge.text-bg-primary span:first").text("🌑");
+                $(".badge.text-bg-danger span:first").text("🌕");
             }
             
-            drawcloud(400);
-            // drawcloud1(700);
+            updateClouds();
+            clouds.forEach(cloud => drawcloud(cloud));
+            drawRain();
 
             requestAnimationFrame(draw);
         }
+
         
         
     </script>
@@ -409,7 +479,7 @@
             <table style="margin-right: 50px;">
                 <tr>
                     <td rowspan=2>
-                        <img src="{% static 'images/sun.png'%}" width="50" height="50" />
+                        <img width="50" height="50" />
                     </td>
                     <td>
                         <div class="badge text-bg-primary text-wrap" style="width: 6rem;">
@@ -468,7 +538,7 @@
                         aria-expanded="false">
                         {{ request.user }}
                     </a>
-                    <ul class="dropdown-menu text-center">
+                    <ul class="dropdown-menu dropdown-menu-margin text-center">
                         <li><a class="dropdown-item" href="#">Profiles</a></li>
                         <li>
                             <hr class="dropdown-divider">

@@ -17,6 +17,17 @@ class WeatherData(models.Model):
     rain_probability = models.IntegerField()
 
 
+class BoardAuthor(models.Model):
+    username = models.CharField(max_length=150, null=False, blank=False)
+
+    def __str__(self):
+        return self.username
+
+class WeatherBoard(models.Model):
+    author = models.ForeignKey(BoardAuthor, on_delete=models.CASCADE)
+    shatin = models.JSONField(name='care')
+
+
 
 class ModelAuthor(models.Model):
     username = models.CharField(max_length=150, null=False, blank=False)

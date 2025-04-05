@@ -16,17 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path as url
 from django.views.generic import TemplateView
-from myapp.views import UpdateModelPost, ViewWeatherData, CreateWeatherData, DeleteWeatherData,get_sun, home_view, get_server_datetime
+from myapp.views import *
 from myapp.register import signup
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', home_view, name='home'),
-    url(r'^home$', home_view, name='home'),
+    url(r'^board$', home_view, name='home'),
     url(r'^clock/$', TemplateView.as_view(template_name='clock.html'), name='contact'),
     url(r'^9dayforecast/$', ViewWeatherData.as_view(template_name='days_forecast.html'), name='days_forecast'),
     url(r'^createWeatherData/$', CreateWeatherData.as_view(template_name='create_days_forecast.html'), name='9dayforecast'),
     url(r'^deleteWeatherData/(?P<pk>\d)/$', DeleteWeatherData.as_view(), name='delete'),
+
+    url(r'^createWeatherBoard/$', CreatWeatherBoard.as_view(template_name='create_weather_board.html'), name='createBoard'),
+    url(r'^deleteWeatherBoard/(?P<pk>\d)/$', DeleteWeatherBoard.as_view(), name='deleteBoard'),
     
     url(r'^weather/sun/?$', get_sun),
     url(r'^weather/clock/$', get_server_datetime),

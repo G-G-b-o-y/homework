@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from .models import ModelPost, YearSunUpDown, WeatherData
+from .models import ModelPost, YearSunUpDown, WeatherData, WeatherBoard
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.template import loader
@@ -197,6 +197,27 @@ class DeleteWeatherData(DeleteView):
         def get_success_url(self):
                 return reverse('days_forecast')
         
+
+class CreatWeatherBoard(CreateView):
+        model = WeatherBoard
+        fields = '__all__'
+        template_name = 'create_weather_board.html'
+
+        def form_valid(self, form):
+                model = form.save(commit=False)
+                model.save()
+                return HttpResponseRedirect(reverse('createBoard'))
+
+class DeleteWeatherBoard(DeleteView):
+        model = WeatherBoard
+        template_name = 'delete_weather_board.html'
+
+        def get_success_url(self):
+                return reverse('deleteBoard')
+
+
+
+
                 
 class UpdateModelPost(UpdateView):
         model = ModelPost

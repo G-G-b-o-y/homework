@@ -39,8 +39,7 @@ urlpatterns = [
     url(r'^signup/?$', signup, name='signup'),
     
     
-    url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-    url(r'^update/(?P<id>\d)/$', UpdateModelPost.as_view(), name='update'),
+    url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about')
 ]
 
 

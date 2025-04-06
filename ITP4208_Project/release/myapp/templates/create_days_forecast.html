@@ -1,14 +1,20 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {%  block content %}
-    <div class="col-lg-9">
+    <div>
         <form action="" method="POST">
             {% csrf_token %}
             {{ form.non_fields_errors }}
             <div class="fieldWrapper">
-                <label for="{{ form.date.id_for_label }}"> date : </label>
-                {{ form.date | add_class:"form-control" }}
-                {{ form.date.errors }}
+                <div class="mb-3">
+                    <label for="{{ form.date.id_for_label }}" class="form-label">Select Date</label>
+                    <div class="input-group date" id="datepicker">
+                        {% render_field form.date type="date" class+="form-control" data-bs-toggle="datepicker" %}
+                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                    </div>
+                    <div class="form-text">Choose forecast date</div>
+                    {{ form.date.errors }}
+                </div>
             </div>
             <div class="fieldWrapper">
                     <label for="{{ form.minTemp.id_for_label }}"> minTemp : </label>
@@ -20,10 +26,21 @@
                     {{ form.maxTemp | add_class:"form-control" }}
                     {{ form.maxTemp.errors }}
             </div>
-            <div class="fieldWrapper">
-                    <label for="{{ form.weather_type.id_for_label }}"> weather_type : </label>
-                    {{ form.weather_type | add_class:"form-control" }}
-                    {{ form.weather_type.errors }}
+            <!-- Weather Type Select Dropdown -->
+            <div class="mb-3">
+                <label for="{{ form.weather_type.id_for_label }}" class="form-label">Weather Type</label>
+                <select class="form-select" id="{{ form.weather_type.id_for_label }}" name="{{ form.weather_type.name }}">
+                    <option value="">Select weather type...</option>
+                    <option value="Sunny">Sunny</option>
+                    <option value="Cloudy">Cloudy</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Snowy">Snowy</option>
+                    <option value="Foggy">Foggy</option>
+                    <option value="Windy">Windy</option>
+                    <option value="Stormy">Stormy</option>
+                </select>
+                <div class="form-text">Select the expected weather condition</div>
+                {{ form.weather_type.errors }}
             </div>
             <div class="fieldWrapper">
                     <label for="{{ form.rain_probability.id_for_label }}"> rain_probability : </label>

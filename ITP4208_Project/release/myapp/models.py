@@ -8,6 +8,176 @@ class YearSunUpDown:
         return response["data"]
 
 
+class loaction:
+    def get_weather_data():
+        wether_loc_data = {
+        "loc_name_list": 
+        [
+            {
+                "loc_eng": "Central",
+                "loc_chinese": "中西區",
+                "temperature": 12,
+                "wind": 3,
+                "direction": "East",
+                "humidity": 79,
+                "rainfall": 0.5,
+                "condition": "Cloudy"
+            },
+            {
+                "loc_eng": "EasternDistrict",
+                "loc_chinese": "東區",
+                "temperature": 14,
+                "wind": 5,
+                "direction": "North",
+                "humidity": 75,
+                "rainfall": 0.0,
+                "condition": "Windy"
+            },
+            {
+                "loc_eng": "IslandsDistrict",
+                "loc_chinese": "離島區",
+                "temperature": 16,
+                "wind": 7,
+                "direction": "South",
+                "humidity": 80,
+                "rainfall": 1.2,
+                "condition": "Stormy"
+            },
+            {
+                "loc_eng": "KowloonCityDistrict",
+                "loc_chinese": "九龍城區",
+                "temperature": 15,
+                "wind": 4,
+                "direction": "West",
+                "humidity": 78,
+                "rainfall": 0.8,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "KwunTongDistrict",
+                "loc_chinese": "觀塘區",
+                "temperature": 14,
+                "wind": 6,
+                "direction": "East",
+                "humidity": 77,
+                "rainfall": 0.3,
+                "condition": "Windy"
+            },
+            {
+                "loc_eng": "North",
+                "loc_chinese": "北區",
+                "temperature": 13,
+                "wind": 4,
+                "direction": "North",
+                "humidity": 76,
+                "rainfall": 0.0,
+                "condition": "Cloudy"
+            },
+            {
+                "loc_eng": "SaiKung",
+                "loc_chinese": "西貢區",
+                "temperature": 15,
+                "wind": 5,
+                "direction": "South",
+                "humidity": 79,
+                "rainfall": 2.1,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "ShamShuiPoDistrict",
+                "loc_chinese": "深水埗區",
+                "temperature": 16,
+                "wind": 3,
+                "direction": "West",
+                "humidity": 75,
+                "rainfall": 0.7,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "ShaTin",
+                "loc_chinese": "沙田區",
+                "temperature": 14,
+                "wind": 4,
+                "direction": "East",
+                "humidity": 77,
+                "rainfall": 0.9,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "TaiPo",
+                "loc_chinese": "大埔區",
+                "temperature": 13,
+                "wind": 5,
+                "direction": "North",
+                "humidity": 78,
+                "rainfall": 1.5,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "TsuenWanDistrict",
+                "loc_chinese": "荃灣區",
+                "temperature": 15,
+                "wind": 6,
+                "direction": "South",
+                "humidity": 76,
+                "rainfall": 0.4,
+                "condition": "Windy"
+            },
+            {
+                "loc_eng": "TuenMunDistrict",
+                "loc_chinese": "屯門區",
+                "temperature": 14,
+                "wind": 7,
+                "direction": "West",
+                "humidity": 79,
+                "rainfall": 0.6,
+                "condition": "Stormy"
+            },
+            {
+                "loc_eng": "wanchai",
+                "loc_chinese": "灣仔區",
+                "temperature": 16,
+                "wind": 4,
+                "direction": "East",
+                "humidity": 75,
+                "rainfall": 0.2,
+                "condition": "Cloudy"
+            },
+            {
+                "loc_eng": "WongTaiSin",
+                "loc_chinese": "黃大仙區",
+                "temperature": 15,
+                "wind": 5,
+                "direction": "North",
+                "humidity": 77,
+                "rainfall": 1.0,
+                "condition": "Rainy"
+            },
+            {
+                "loc_eng": "YauTsimMongDistrict",
+                "loc_chinese": "油尖旺區",
+                "temperature": 16,
+                "wind": 6,
+                "direction": "South",
+                "humidity": 78,
+                "rainfall": 0.1,
+                "condition": "Windy"
+            },
+            {
+                "loc_eng": "YuenLongDistrict",
+                "loc_chinese": "元朗區",
+                "temperature": 14,
+                "wind": 4,
+                "direction": "West",
+                "humidity": 76,
+                "rainfall": 0.0,
+                "condition": "Cloudy"
+            }
+        ]
+
+        }
+        return wether_loc_data
+
 # Create your models here.
 
 

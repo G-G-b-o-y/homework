@@ -39,154 +39,7 @@ def airplane_information(request, date, way, *args):
 
 def home_view(request):
         template = loader.get_template('home.html')
-        context = {
-        "loc_name_list": [
-                {
-                "loc_eng": "Central",
-                "loc_chinese": "中西區",
-                "temperature": 12,
-                "wind": 3,
-                "direction": "East",
-                "humidity": 79,
-                "rainfall": 0.5
-                },
-                {
-                "loc_eng": "EasternDistrict",
-                "loc_chinese": "東區",
-                "temperature": 14,
-                "wind": 5,
-                "direction": "North",
-                "humidity": 75,
-                "rainfall": 0.0
-                },
-                {
-                "loc_eng": "IslandsDistrict",
-                "loc_chinese": "離島區",
-                "temperature": 16,
-                "wind": 7,
-                "direction": "South",
-                "humidity": 80,
-                "rainfall": 1.2
-                },
-                {
-                "loc_eng": "KowloonCityDistrict",
-                "loc_chinese": "九龍城區",
-                "temperature": 15,
-                "wind": 4,
-                "direction": "West",
-                "humidity": 78,
-                "rainfall": 0.8
-                },
-                {
-                "loc_eng": "KwunTongDistrict",
-                "loc_chinese": "觀塘區",
-                "temperature": 14,
-                "wind": 6,
-                "direction": "East",
-                "humidity": 77,
-                "rainfall": 0.3
-                },
-                {
-                "loc_eng": "North",
-                "loc_chinese": "北區",
-                "temperature": 13,
-                "wind": 4,
-                "direction": "North",
-                "humidity": 76,
-                "rainfall": 0.0
-                },
-                {
-                "loc_eng": "SaiKung",
-                "loc_chinese": "西貢區",
-                "temperature": 15,
-                "wind": 5,
-                "direction": "South",
-                "humidity": 79,
-                "rainfall": 2.1
-                },
-                {
-                "loc_eng": "ShamShuiPoDistrict",
-                "loc_chinese": "深水埗區",
-                "temperature": 16,
-                "wind": 3,
-                "direction": "West",
-                "humidity": 75,
-                "rainfall": 0.7
-                },
-                {
-                "loc_eng": "ShaTin",
-                "loc_chinese": "沙田區",
-                "temperature": 14,
-                "wind": 4,
-                "direction": "East",
-                "humidity": 77,
-                "rainfall": 0.9
-                },
-                {
-                "loc_eng": "TaiPo",
-                "loc_chinese": "大埔區",
-                "temperature": 13,
-                "wind": 5,
-                "direction": "North",
-                "humidity": 78,
-                "rainfall": 1.5
-                },
-                {
-                "loc_eng": "TsuenWanDistrict",
-                "loc_chinese": "荃灣區",
-                "temperature": 15,
-                "wind": 6,
-                "direction": "South",
-                "humidity": 76,
-                "rainfall": 0.4
-                },
-                {
-                "loc_eng": "TuenMunDistrict",
-                "loc_chinese": "屯門區",
-                "temperature": 14,
-                "wind": 7,
-                "direction": "West",
-                "humidity": 79,
-                "rainfall": 0.6
-                },
-                {
-                "loc_eng": "wanchai",
-                "loc_chinese": "灣仔區",
-                "temperature": 16,
-                "wind": 4,
-                "direction": "East",
-                "humidity": 75,
-                "rainfall": 0.2
-                },
-                {
-                "loc_eng": "WongTaiSin",
-                "loc_chinese": "黃大仙區",
-                "temperature": 15,
-                "wind": 5,
-                "direction": "North",
-                "humidity": 77,
-                "rainfall": 1.0
-                },
-                {
-                "loc_eng": "YauTsimMongDistrict",
-                "loc_chinese": "油尖旺區",
-                "temperature": 16,
-                "wind": 6,
-                "direction": "South",
-                "humidity": 78,
-                "rainfall": 0.1
-                },
-                {
-                "loc_eng": "YuenLongDistrict",
-                "loc_chinese": "元朗區",
-                "temperature": 14,
-                "wind": 4,
-                "direction": "West",
-                "humidity": 76,
-                "rainfall": 0.0
-                }
-        ]
-        }
+        context = loaction.get_weather_data()
         return HttpResponse(template.render(context, request))
 
 class ViewWeatherData(ListView):
@@ -229,27 +82,10 @@ class DeleteWeatherBoard(DeleteView):
                 return reverse('deleteBoard')
 
 def weather_detail_view(request, district):
-    loc_name_list = [
-        {
-            "loc_eng": "Central", "loc_chinese": "中西區", "temperature": 12, "wind": 3,
-            "humidity": 79, "rainfall": 0.5, "condition": "Rainy"
-        },
-        {
-            "loc_eng": "EasternDistrict", "loc_chinese": "東區", "temperature": 14, "wind": 5,
-            "humidity": 75, "rainfall": 0.0, "condition": "Sunny"
-        },
-        {
-            "loc_eng": "IslandsDistrict", "loc_chinese": "離島區", "temperature": 16, "wind": 7,
-            "humidity": 80, "rainfall": 1.2, "condition": "Cloudy"
-        },
-        # 其他地区数据保持相同结构...
-    ]
-    
-    try:
-        weather_data = next(item for item in loc_name_list
-                           if item["loc_eng"].lower() == district.lower())
+        loc_name_list = loaction.get_weather_data()["loc_name_list"]
+        weather_data = next(item for item in loc_name_list if item["loc_eng"].lower() == district.lower())
         context = {
-            "weather": {
+                "weather": {
                 "district": weather_data["loc_chinese"],
                 "temperature": weather_data["temperature"],
                 "humidity": weather_data["humidity"],
@@ -257,11 +93,8 @@ def weather_detail_view(request, district):
                 "condition": weather_data["condition"],
                 "icon": f"images/{weather_data['condition']}.png",
                 "description": f"{weather_data['condition']} weather with {weather_data['wind']} km/h winds"
-            }
+                }
         }
         return render(request, 'weather_detail.html', context)
-    except StopIteration:
-        from django.http import Http404
-        raise Http404(f"Weather data not found for {district}")
 
                 

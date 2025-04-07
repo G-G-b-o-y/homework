@@ -40,8 +40,6 @@ urlpatterns = [
     url(r'^logout/?$', auth_views.LogoutView.as_view(template_name='home.html'), name='logout'),
     url(r'^signup/?$', signup, name='signup'),
     
-    
-    url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^weather_detail/(?P<district>\w+)/$', weather_detail_view, name='weather_detail')
 ]
 

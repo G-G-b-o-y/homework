@@ -25,12 +25,11 @@ urlpatterns = [
     url(r'^airportSite/$', TemplateView.as_view(template_name="airplane.html"), name='airplane'),
     url(r'^clock/$', TemplateView.as_view(template_name='clock.html'), name='contact'),
     url(r'^9dayforecast/$', ViewWeatherData.as_view(template_name='days_forecast.html'), name='days_forecast'),
-    
     url(r'^createWeatherData/$', CreateWeatherData.as_view(template_name='create_days_forecast.html'), name='9dayforecast'),
-    url(r'^deleteWeatherData/(?P<pk>\d)/$', DeleteWeatherData.as_view(), name='delete'),
+    url(r'^deleteWeatherData/(?P<pk>\d{4}-\d{2}-\d{2})/$', DeleteWeatherData.as_view(), name='delete'),
 
-    url(r'^createWeatherBoard/$', CreatWeatherBoard.as_view(template_name='create_weather_board.html'), name='createBoard'),
-    url(r'^deleteWeatherBoard/(?P<pk>\d)/$', DeleteWeatherBoard.as_view(), name='deleteBoard'),
+    # url(r'^createWeatherBoard/$', CreatWeatherBoard.as_view(template_name='create_weather_board.html'), name='createBoard'),
+    # url(r'^deleteWeatherBoard/(?P<pk>\d)/$', DeleteWeatherBoard.as_view(), name='deleteBoard'),
     
     url(r'^weather/sun/?$', get_sun),
     url(r'^weather/clock/$', get_server_datetime),

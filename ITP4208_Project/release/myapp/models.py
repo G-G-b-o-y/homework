@@ -196,7 +196,7 @@ class Airplane:
 
 
 class WeatherData(models.Model):
-    date = models.DateField(auto_now=False)
+    date = models.DateField(auto_now=False, primary_key=True)
     minTemp = models.IntegerField()
     maxTemp = models.IntegerField()
     weather_type = models.CharField(max_length=30)

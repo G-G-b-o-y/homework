@@ -25,7 +25,8 @@ SECRET_KEY = 'wmk+&qguqwmj8#&dq3jhf+df4!$xq-co0=5^5=#%dt2zu5o%r&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# this computer IP
+ALLOWED_HOSTS = ['192.168.0.144']
 
 
 # Application definition

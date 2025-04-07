@@ -28,9 +28,6 @@
                     </div>
 
                     <dl class="row">
-                        <dt class="col-6">Humidity</dt>
-                        <dd class="col-6 text-end">{{ weather.humidity }}%</dd>
-
                         <dt class="col-6">Rain Chance</dt>
                         <dd class="col-6 text-end">{{ weather.rain_probability }}%</dd>
 
@@ -40,7 +37,7 @@
                 </div>
 
                 <div class="card-footer bg-light">
-                    <a href='{% url "delete" weather.id %}'
+                    <a href='{% url "delete" weather.date %}'
                        class="btn btn-danger btn-sm w-100">
                         Delete
                     </a>

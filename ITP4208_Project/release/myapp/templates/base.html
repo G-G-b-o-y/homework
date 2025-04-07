@@ -56,11 +56,6 @@
             });
         }
 
-        // Cloud properties
-        const clouds = [
-            { x: 400, y: 120, speed: 0.5 },
-            { x: 700, y: 100, speed: 0.3 }
-        ];
 
         // get server time
         $.get(
@@ -260,54 +255,6 @@
 
         }
 
-        function drawcloud1(index) {
-            cxk.fillStyle = "#F2EEEE";
-            cxk.beginPath();
-            cxk.arc(index - 80, 100, 50, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "#F2EEEE";
-            cxk.beginPath();
-            cxk.arc(index, 80, 70, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "#F2EEEE";
-            cxk.beginPath();
-            cxk.arc(index + 80, 90, 60, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "#F2EEEE"
-            cxk.beginPath()
-            cxk.rect(index - 90, 116.6, 181, 33)
-            cxk.fill()
-
-
-            cxk.fillStyle = "white";
-            cxk.beginPath();
-            cxk.arc(index - 10, 150, 50, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "white";
-            cxk.beginPath();
-            cxk.arc(index + 70, 140, 60, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "white";
-            cxk.beginPath();
-            cxk.arc(index + 160, 130, 70, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "white";
-            cxk.beginPath();
-            cxk.arc(index + 220, 155, 45, 0, 2 * Math.PI);
-            cxk.fill();
-
-            cxk.fillStyle = "white"
-            cxk.beginPath()
-            cxk.rect(index - 10, 167, 230, 33)
-            cxk.fill()
-
-        }
 
         function drawStars() {
             for (let i = 0; i < 500; i++) {
@@ -407,6 +354,14 @@
             }
         }
 
+        // Cloud properties
+        const clouds = [
+            { x: 400, y: 120, speed: 0.5 },
+            { x: 100, y: 100, speed: 0.3 },
+            { x: 300, y: 80, speed: 0.7 },
+            { x: 200, y: 65, speed: 0.6 },
+        ];
+
         function updateClouds() {
             for (let i = 0; i < clouds.length; i++) {
                 clouds[i].x += clouds[i].speed;
@@ -416,8 +371,44 @@
             }
         }
 
+        function setWeather(condition) {
+            switch(condition){
+                case "Sunny":
+                 // console.log('晴天');
+                return;
+                case "Cloudy":
+                 // console.log('多云');
+                 updateClouds();
+                 clouds.forEach(cloud => drawcloud(cloud));
+                break;
+                case "Rainy":
+                 // console.log('下雨');
+                 drawRain();
+                break;
+                case "Snowy":
+                 // console.log('下雪');
+                break;
+                case "Foggy":
+                 // console.log('有雾');
+                break;
+                case "Windy":
+                 // console.log('有风');
+                 updateClouds();
+                 clouds.forEach(cloud => drawcloud(cloud));
+                break;
+                case "Stormy":
+                 // console.log('暴风雨');
+                 updateClouds();
+                 clouds.forEach(cloud => drawcloud(cloud));
+                 drawRain();
+                 drawRain();
+                break;
+           }
+        }
+
         function draw() {
             cxk.clearRect(0, 0, canv.width, canv.height);
+
             let day_index = getDayOrNight();
             // console.log(day_index);
             if (day_index < 1 && day_index >= 0) {
@@ -448,14 +439,15 @@
                 $(".badge.text-bg-danger span:first").text("🌕");
             }
 
-            updateClouds();
-            clouds.forEach(cloud => drawcloud(cloud));
-            drawRain();
+            
+            // Weather
+            setWeather("{{ weather.condition }}");
+
 
             requestAnimationFrame(draw);
         }
 
-
+        
 
     </script>
 

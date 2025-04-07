@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .flight-card {
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .flight-table th {
+        background-color: #f8f9fa;
+    }
+    .nav-tabs .nav-link.active {
+        font-weight: bold;
+        background-color: #f8f9fa;
+    }
+    .status-delayed {
+        color: #dc3545;
+    }
+    .status-ontime {
+        color: #28a745;
+    }
+</style>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Hong Kong International Airport</h1>
+    
+    <ul class="nav nav-tabs" id="flightTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="arrival-tab" data-bs-toggle="tab" data-bs-target="#arrival" type="button" role="tab">Arrivals</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="departure-tab" data-bs-toggle="tab" data-bs-target="#departure" type="button" role="tab">Departures</button>
+        </li>
+    </ul>
+    
+    <div class="tab-content" id="flightTabsContent">
+        <div class="tab-pane fade show active" id="arrival" role="tabpanel">
+            <div class="card flight-card">
+                <div class="card-header">
+                    <h5>Arrival Flights</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover flight-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Flight No.</th>
+                                    <th>Airline</th>
+                                    <th>Origin</th>
+                                    <th>Status</th>
+                                    <th>Baggage</th>
+                                    <th>Stand</th>
+                                </tr>
+                            </thead>
+                            <tbody id="arrivalFlights">
+                                <!-- Arrival data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-pane fade" id="departure" role="tabpanel">
+            <div class="card flight-card">
+                <div class="card-header">
+                    <h5>Departure Flights</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover flight-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Flight No.</th>
+                                    <th>Airline</th>
+                                    <th>Destination</th>
+                                    <th>Status</th>
+                                    <th>Terminal</th>
+                                    <th>Gate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departureFlights">
+                                <!-- Departure data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Load arrival data
+        $.getJSON('/airport/2025-04-07/arrival', function(data) {
+            const tbody = $('#arrivalFlights');
+            data.forEach(flight => {
+                const row = `
+                    <tr>
+                        <td>${flight.time}</td>
+                        <td>${flight.flight.map(f => f.no).join(', ')}</td>
+                        <td>${flight.flight.map(f => f.airline).join(', ')}</td>
+                        <td>${flight.origin.join(', ')}</td>
+                        <td class="${flight.status.includes('Delayed') ? 'status-delayed' : 'status-ontime'}">${flight.status}</td>
+                        <td>${flight.baggage || 'N/A'}</td>
+                        <td>${flight.stand || 'N/A'}</td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        });
+        
+        // Load departure data
+        $.getJSON('/airport/2025-04-07/departure', function(data) {
+            const tbody = $('#departureFlights');
+            data.forEach(flight => {
+                const row = `
+                    <tr>
+                        <td>${flight.time}</td>
+                        <td>${flight.flight.map(f => f.no).join(', ')}</td>
+                        <td>${flight.flight.map(f => f.airline).join(', ')}</td>
+                        <td>${flight.destination.join(', ')}</td>
+                        <td class="${flight.status.includes('Delayed') ? 'status-delayed' : 'status-ontime'}">${flight.status}</td>
+                        <td>${flight.terminal || 'N/A'}</td>
+                        <td>${flight.gate || 'N/A'}</td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        });
+    });
+</script>
+{% endblock content %}

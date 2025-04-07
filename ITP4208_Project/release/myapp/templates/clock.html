@@ -30,16 +30,27 @@
               </p>
             </div>
             <div class="card-footer text-body-secondary">
-                <span id="Year" class=""></span>
-                <span class="">Year</span>
+                {% comment %} April 7, 2025 {% endcomment %}
                 <span id="Month" class=""></span>
-                <span class="">Month</span>
                 <span id="Day" class=""></span>
-                <span class="">Day</span>
+                <span id="Year" class=""></span>
             </div>
         </div>
         
         <script>
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                              "July", "August", "September", "October", "November", "December"];
+            
+            function getOrdinalSuffix(day) {
+                if (day > 3 && day < 21) return 'th';
+                switch (day % 10) {
+                    case 1: return 'st';
+                    case 2: return 'nd';
+                    case 3: return 'rd';
+                    default: return 'th';
+                }
+            }
+
             function text_update() {
                 let client_timestamp = new Date().getTime();
                 let client_time_loss = $("#timeLoss").html();
@@ -47,8 +58,8 @@
                 // console.log("CORR_TIME:", corrected_time);
                 var date = new Date(corrected_time);
                 Y = date.getFullYear();
-                M = date.getMonth();
-                D = date.getDate();
+                M = monthNames[date.getMonth()];
+                D = date.getDate() + getOrdinalSuffix(date.getDate());
                 h = date.getHours().toString().padStart(2,'0');
                 m = date.getMinutes().toString().padStart(2,'0');
                 S = date.getSeconds().toString().padStart(2,'0');

@@ -22,9 +22,10 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', home_view, name='home'),
-    url(r'^board$', home_view, name='home'),
+    url(r'^airportSite/$', TemplateView.as_view(template_name="airplane.html"), name='airplane'),
     url(r'^clock/$', TemplateView.as_view(template_name='clock.html'), name='contact'),
     url(r'^9dayforecast/$', ViewWeatherData.as_view(template_name='days_forecast.html'), name='days_forecast'),
+    
     url(r'^createWeatherData/$', CreateWeatherData.as_view(template_name='create_days_forecast.html'), name='9dayforecast'),
     url(r'^deleteWeatherData/(?P<pk>\d)/$', DeleteWeatherData.as_view(), name='delete'),
 
@@ -33,6 +34,7 @@ urlpatterns = [
     
     url(r'^weather/sun/?$', get_sun),
     url(r'^weather/clock/$', get_server_datetime),
+    url(r'^airport/(\d{4}-\d{2}-\d{2})/(\b(arrival|departure)\b)$', airplane_information, name='airport'),
 
     url(r'^login/?$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/?$', auth_views.LogoutView.as_view(template_name='home.html'), name='logout'),

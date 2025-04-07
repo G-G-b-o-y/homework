@@ -13,6 +13,7 @@ import os
 def get_sun(request):
     for date in YearSunUpDown.get_sun_time():
         if datetime.datetime.today().strftime('%Y-%m-%d') == date[0]:
+                # reuturn all days
                 return JsonResponse(date, safe=False)
 
 def get_server_datetime(request):
@@ -24,9 +25,21 @@ def get_server_datetime(request):
         }
         return JsonResponse(time_dict)
 
+# get airplane data 
+# bug
+def airplane_information(request, date, way, *args):
+        if way=="arrival":
+               arrival="true"
+        elif way=="departure":
+               arrival="false"
+        else :
+               return HttpResponse(f"error params: {way}; only accept 'arrival' or 'departure'")
+        result = Airplane.get_airplanes(date=date, arrival=arrival)
+        return JsonResponse(result, safe=False)
+
 def home_view(request):
-  template = loader.get_template('home.html')
-  context = {
+        template = loader.get_template('home.html')
+        context = {
         "loc_name_list": [
                 {
                 "loc_eng": "Central",
@@ -174,7 +187,7 @@ def home_view(request):
                 }
         ]
         }
-  return HttpResponse(template.render(context, request))
+        return HttpResponse(template.render(context, request))
 
 class ViewWeatherData(ListView):
         queryset = WeatherData.objects.all()

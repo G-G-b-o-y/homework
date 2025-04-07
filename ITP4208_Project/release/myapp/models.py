@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 import requests
 
@@ -8,6 +9,21 @@ class YearSunUpDown:
 
 
 # Create your models here.
+
+
+class Airplane:
+    def get_airplanes(date=datetime.datetime.today().strftime('%Y-%m-%d'), lang="en", arrival="false"):
+        params = {
+            "date": date,
+            "lang": lang,
+            "cargo": "false",
+            "arrival": arrival
+        }
+        response = requests.get("https://www.hongkongairport.com/flightinfo-rest/rest/flights/past", params=params)
+        for i in response.json():
+            if params["date"] == i["date"]:
+                return i["list"]
+
 
 class WeatherData(models.Model):
     date = models.DateField(auto_now=False)

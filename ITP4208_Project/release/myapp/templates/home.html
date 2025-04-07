@@ -11,18 +11,50 @@
   {% load static %}
 
   <script>
-    function showWeather(district) {
-      // Set title and data using jQuery
-      $('#weatherTitle').text(district);
-      const data = $(`#${district}-data`).data();
-      $('#rainfall').text(data.rainfall);
-      $('#humidity').text(data.humidity);
-      $('#wind').text(data.wind);
-      $('#temp').text(data.temp);
-      
-      // Show modal
-      $('#weatherModal').modal('show');
-    }
+    $(document).ready(function() {
+      window.showWeather = function(district) {
+        // Get weather data from hidden div
+        const data = $(`#${district}-data`).data();
+        
+        // Prepare detail data object matching weather_detail.html structure
+        // Determine weather condition based on rainfall
+        let condition = 'Sunny';
+        let alertMsg = 'No alerts';
+        let alertClass = 'alert-info';
+        
+        if (data.rainfall > 50) {
+          condition = 'Rainy';
+          alertMsg = 'Heavy rain expected';
+          alertClass = 'alert-warning';
+        } else if (data.rainfall > 20) {
+          condition = 'Cloudy';
+          alertMsg = 'Light rain expected';
+          alertClass = 'alert-info';
+        }
+
+        const detailData = {
+          locChinese: $(`#${district}-data`).data('loc-chinese'),
+          locEng: district,
+          district: district,
+          data: {
+            condition: condition,
+            temp: data.temp,
+            humidity: data.humidity,
+            wind: data.wind
+          },
+          alert: {
+            message: alertMsg,
+            class: alertClass
+          }
+        };
+        
+        // Store data in sessionStorage for weather_detail.html
+        sessionStorage.setItem('weatherDetailData', JSON.stringify(detailData));
+        
+        // Redirect to weather detail page
+        window.location.href = `/weather_detail/${district}`;
+      }
+    });
   </script>
   <div class="p-5 rounded">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -38,6 +70,7 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary"
                   onclick="showWeather('{{ loc_name.loc_eng }}')">Detail</button>
                   <div id="{{ loc_name.loc_eng }}-data"
+                       data-loc-chinese="{{ loc_name.loc_chinese }}"
                        data-rainfall="{{ loc_name.rainfall }}"
                        data-humidity="{{ loc_name.humidity }}"
                        data-wind="{{ loc_name.wind }}"

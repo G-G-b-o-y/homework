@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="weather-card p-4 rounded shadow" style="background: #f8f9fa;">
+        <h2 class="mb-4">{{ weather.district }} Weather Details</h2>
+        
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="{% static weather.icon %}" class="weather-icon" alt="Weather Icon" style="width: 120px;">
+                <h3 class="mt-3">{{ weather.condition }}</h3>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="detail-item p-3 mb-3 rounded">
+                            <h5><i class="fas fa-thermometer-half"></i> Temperature</h5>
+                            <p class="display-4">{{ weather.temperature }}°C</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div class="detail-item p-3 mb-3 rounded">
+                            <h5><i class="fas fa-tint"></i> Humidity</h5>
+                            <p class="display-4">{{ weather.humidity }}%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div class="detail-item p-3 mb-3 rounded">
+                            <h5><i class="fas fa-wind"></i> Wind Speed</h5>
+                            <p class="display-4">{{ weather.wind_speed }} km/h</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div class="detail-item p-3 mb-3 rounded">
+                            <h5><i class="fas fa-info-circle"></i> Description</h5>
+                            <p class="lead">{{ weather.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

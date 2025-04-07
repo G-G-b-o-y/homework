@@ -228,4 +228,40 @@ class DeleteWeatherBoard(DeleteView):
         def get_success_url(self):
                 return reverse('deleteBoard')
 
+def weather_detail_view(request, district):
+    loc_name_list = [
+        {
+            "loc_eng": "Central", "loc_chinese": "中西區", "temperature": 12, "wind": 3,
+            "humidity": 79, "rainfall": 0.5, "condition": "Rainy"
+        },
+        {
+            "loc_eng": "EasternDistrict", "loc_chinese": "東區", "temperature": 14, "wind": 5,
+            "humidity": 75, "rainfall": 0.0, "condition": "Sunny"
+        },
+        {
+            "loc_eng": "IslandsDistrict", "loc_chinese": "離島區", "temperature": 16, "wind": 7,
+            "humidity": 80, "rainfall": 1.2, "condition": "Cloudy"
+        },
+        # 其他地区数据保持相同结构...
+    ]
+    
+    try:
+        weather_data = next(item for item in loc_name_list
+                           if item["loc_eng"].lower() == district.lower())
+        context = {
+            "weather": {
+                "district": weather_data["loc_chinese"],
+                "temperature": weather_data["temperature"],
+                "humidity": weather_data["humidity"],
+                "wind_speed": weather_data["wind"],
+                "condition": weather_data["condition"],
+                "icon": f"images/{weather_data['condition']}.png",
+                "description": f"{weather_data['condition']} weather with {weather_data['wind']} km/h winds"
+            }
+        }
+        return render(request, 'weather_detail.html', context)
+    except StopIteration:
+        from django.http import Http404
+        raise Http404(f"Weather data not found for {district}")
+
                 

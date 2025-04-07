@@ -18,7 +18,7 @@
         }
 
         var {
-            visibility:hidden;
+            visibility: hidden;
         }
 
         .user-icon {
@@ -29,8 +29,7 @@
 
 <body onload="draw();">
     {% load static %}
-    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
-    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
@@ -69,7 +68,7 @@
             function (data) {
                 const server_timestamp = data["timestamp"];
                 const client_timestamp = new Date().getTime()
-                const client_time_loss = client_timestamp-server_timestamp
+                const client_time_loss = client_timestamp - server_timestamp
                 $("#timeLoss").html(client_time_loss);
                 console.log("SERVER_TIME:", server_timestamp);
                 console.log("CLIENT_TIME:", client_timestamp);
@@ -80,10 +79,10 @@
         function fakeRandomNum() {
             step = ++random_init_step
             // (seed * 9301 + 49297) % 233280
-            let tempSeed = Math.round(random_seed+step%3);
+            let tempSeed = Math.round(random_seed + step % 3);
             let random_result = tempSeed * 9301 + 49297
             let rem = random_result % 233280
-            return rem/233280
+            return rem / 233280
         }
 
         // 傳入 HH:MM 返回 second
@@ -152,12 +151,6 @@
 
             }
         }
-
-        {% comment %} var image = new Image();
-        image.src = "myImage.png";
-        image.onload = function () {
-            context.drawImage(image, 0, 0);
-        } {% endcomment %}
 
         // sun/moon
         function drawSun(index) {
@@ -319,10 +312,10 @@
         function drawStars() {
             for (let i = 0; i < 500; i++) {
                 drawStar(
-                    fakeRandomNum()/1000 * canv.width,
-                    fakeRandomNum()/1000 * canv.height,
-                    fakeRandomNum()/1000 * 1.5,
-                    fakeRandomNum()/1000
+                    fakeRandomNum() / 1000 * canv.width,
+                    fakeRandomNum() / 1000 * canv.height,
+                    fakeRandomNum() / 1000 * 1.5,
+                    fakeRandomNum() / 1000
                 );
             }
 
@@ -367,19 +360,19 @@
             cxk.fill();
         }
 
-        
+
         // Determine day and night
         // Day index > 0 and < 1; Night index > 1 and < 2
         function getDayOrNight() {
             let sunUp_sec = format2sec($("#sunUp").html());
-            let sunDown_sec =format2sec($("#sunDown").html());
+            let sunDown_sec = format2sec($("#sunDown").html());
             let date = new Date();
-            let h_sec = date.getHours()*3600;
-            let m_sec = date.getMinutes()*60;
-            let today_sec = h_sec+m_sec+date.getSeconds();
-            let day_range = sunDown_sec-sunUp_sec
-            let now = today_sec-sunUp_sec
-            return now/day_range;
+            let h_sec = date.getHours() * 3600;
+            let m_sec = date.getMinutes() * 60;
+            let today_sec = h_sec + m_sec + date.getSeconds();
+            let day_range = sunDown_sec - sunUp_sec
+            let now = today_sec - sunUp_sec
+            return now / day_range;
         }
 
         // getSunUp&DownTime
@@ -394,18 +387,18 @@
         function drawRain() {
             cxk.strokeStyle = "rgba(174, 194, 224, 0.5)";
             cxk.lineWidth = 1;
-            
+
             for (let i = 0; i < rainParticles.length; i++) {
                 const p = rainParticles[i];
                 cxk.beginPath();
                 cxk.moveTo(p.x, p.y);
                 cxk.lineTo(p.x + p.length * 0.3, p.y + p.length);
                 cxk.stroke();
-                
+
                 // Update position
                 p.y += p.speed;
                 p.x += p.speed * 0.1;
-                
+
                 // Reset when out of screen
                 if (p.y > canv.height) {
                     p.y = -p.length;
@@ -439,7 +432,7 @@
                 // Night
                 drawNightSky();
                 drawStars();
-                drawMoon(day_index-1);
+                drawMoon(day_index - 1);
                 // Show moon icon
                 $("td img").attr("src", "{% static 'images/moon.png'%}");
                 $(".badge.text-bg-primary span:first").text("🌑");
@@ -448,13 +441,13 @@
                 // MidNight
                 drawNightSky();
                 drawStars();
-                drawMoon(1-Math.abs(day_index));
+                drawMoon(1 - Math.abs(day_index));
                 // Show moon icon
                 $("td img").attr("src", "{% static 'images/moon.png'%}");
                 $(".badge.text-bg-primary span:first").text("🌑");
                 $(".badge.text-bg-danger span:first").text("🌕");
             }
-            
+
             updateClouds();
             clouds.forEach(cloud => drawcloud(cloud));
             drawRain();
@@ -462,8 +455,8 @@
             requestAnimationFrame(draw);
         }
 
-        
-        
+
+
     </script>
 
 

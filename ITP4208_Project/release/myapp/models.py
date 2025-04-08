@@ -1,6 +1,7 @@
-import datetime
+from django.conf import settings
 from django.db import models
 import requests
+import datetime
 
 class YearSunUpDown:
     def get_sun_time():
@@ -209,8 +210,16 @@ class BoardAuthor(models.Model):
     def __str__(self):
         return self.username
 
-class WeatherBoard(models.Model):
-    author = models.ForeignKey(BoardAuthor, on_delete=models.CASCADE)
-    shatin = models.JSONField(name='care')
 
+
+class Location(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    
+    def __str__(self):
+        return self.name
+
+class WeatherBoard(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    locations = models.ManyToManyField(Location)  # 多对多关系
+    created_at = models.DateTimeField(auto_now_add=True)
         

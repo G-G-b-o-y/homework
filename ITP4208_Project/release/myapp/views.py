@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .models import *
+from .forms import WeatherBoardForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.template import loader
 import datetime
 import random
@@ -64,15 +65,17 @@ class DeleteWeatherData(DeleteView):
                 return reverse('days_forecast')
         
 
-class CreatWeatherBoard(CreateView):
-        model = WeatherBoard
-        fields = '__all__'
-        template_name = 'create_weather_board.html'
+class CreateWeatherBoard(CreateView):
+    model = WeatherBoard
+    form_class = WeatherBoardForm  # 使用正确的表单
+    template_name = 'create_weather_board.html'
+    success_url = '/success/'
 
-        def form_valid(self, form):
-                model = form.save(commit=False)
-                model.save()
-                return HttpResponseRedirect(reverse('createBoard'))
+    def form_valid(self, form):
+        form.instance.user = self.request.user  # 设置用户
+        return super().form_valid(form)  # 自动保存多选数据
+                
+            
 
 class DeleteWeatherBoard(DeleteView):
         model = WeatherBoard
@@ -80,6 +83,7 @@ class DeleteWeatherBoard(DeleteView):
 
         def get_success_url(self):
                 return reverse('deleteBoard')
+
 
 def weather_detail_view(request, district):
         loc_name_list = loaction.get_weather_data()["loc_name_list"]

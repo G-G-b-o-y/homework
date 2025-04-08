@@ -1,81 +1,35 @@
 {% extends "base.html" %}
-<!DOCTYPE html>
-<html>
 
-<head>
-  <title></title>
-</head>
+{% block content %}
+<div class="container mt-4">
+    <h2>创建天气看板</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label>选择位置（可多选）:</label>
+            {% for location in form.locations %}
+                <div>
+                    {{ location.tag }}  <!-- 复选框 -->
+                    <label for="{{ location.id_for_label }}">{{ location.choice_label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit">提交</button>
+    </form>
+</div>
 
-<body>
-  {% block content %}
-  {% load static %}
-
-  <script>
-    function showWeather(district) {
-      // Set title and data using jQuery
-      $('#weatherTitle').text(district);
-      const data = $(`#${district}-data`).data();
-      $('#rainfall').text(data.rainfall);
-      $('#humidity').text(data.humidity);
-      $('#wind').text(data.wind);
-      $('#temp').text(data.temp);
-      
-      // Show modal
-      $('#weatherModal').modal('show');
+<style>
+    .location-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
-  </script>
-  <div class="p-5 rounded">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {% for loc_name in loc_name_list %}
-      <div class="col">
-        <div class="card shadow-sm">
-          <img src="{% static 'images/'|add:loc_name.loc_eng|add:'.jpg' %}" alt="germany"
-            class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" />
-          <div class="card-body">
-            <p class="card-text">℃</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary"
-                  onclick="showWeather('{{ loc_name.loc_eng }}')">Detail</button>
-                  <div id="{{ loc_name.loc_eng }}-data"
-                       data-rainfall="{{ loc_name.rainfall }}"
-                       data-humidity="{{ loc_name.humidity }}"
-                       data-wind="{{ loc_name.wind }}"
-                       data-temp="{{ loc_name.temperature }}"
-                       style="display:none;"></div>
-              </div>
-              <small class="text-body-secondary">{{ loc_name.loc_eng }}({{ loc_name.loc_chinese}})</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="weatherTitle"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="weather-details text-center">
-            <p><strong>Rain:</strong> <span id="rainfall"></span> mm</p>
-            <p><strong>Humi:</strong> <span id="humidity"></span>%</p>
-            <p><strong>Wind:</strong> <span id="wind"></span> km/h</p>
-            <p><strong>Temp:</strong> <span id="temp"></span>°C</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endblock content %}
-</body>
-
-</html>
+    
+    .location-options div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+</style>
+{% endblock %}

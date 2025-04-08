@@ -26,7 +26,7 @@ SECRET_KEY = 'wmk+&qguqwmj8#&dq3jhf+df4!$xq-co0=5^5=#%dt2zu5o%r&'
 DEBUG = True
 
 # this computer IP
-ALLOWED_HOSTS = ['192.168.0.144']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition

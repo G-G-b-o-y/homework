@@ -43,6 +43,24 @@ def home_view(request):
         context = loaction.get_weather_data()
         return HttpResponse(template.render(context, request))
 
+
+def weather_detail_view(request, district):
+        loc_name_list = loaction.get_weather_data()["loc_name_list"]
+        weather_data = next(item for item in loc_name_list if item["loc_eng"].lower() == district.lower())
+        context = {
+                "weather": {
+                "district": weather_data["loc_chinese"],
+                "temperature": weather_data["temperature"],
+                "humidity": weather_data["humidity"],
+                "wind_speed": weather_data["wind"],
+                "condition": weather_data["condition"],
+                "icon": f"images/{weather_data['condition']}.png",
+                "description": f"{weather_data['condition']} weather with {weather_data['wind']} km/h winds"
+                }
+        }
+        return render(request, 'weather_detail.html', context)
+
+
 class ViewWeatherData(ListView):
         queryset = WeatherData.objects.all()
         template_name = 'days_forecast.html'
@@ -69,7 +87,7 @@ class CreateWeatherBoard(CreateView):
     model = WeatherBoard
     form_class = WeatherBoardForm  # 使用正确的表单
     template_name = 'create_weather_board.html'
-    success_url = '/success/'
+    success_url = '/myboard/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user  # 设置用户
@@ -84,21 +102,5 @@ class DeleteWeatherBoard(DeleteView):
         def get_success_url(self):
                 return reverse('deleteBoard')
 
-
-def weather_detail_view(request, district):
-        loc_name_list = loaction.get_weather_data()["loc_name_list"]
-        weather_data = next(item for item in loc_name_list if item["loc_eng"].lower() == district.lower())
-        context = {
-                "weather": {
-                "district": weather_data["loc_chinese"],
-                "temperature": weather_data["temperature"],
-                "humidity": weather_data["humidity"],
-                "wind_speed": weather_data["wind"],
-                "condition": weather_data["condition"],
-                "icon": f"images/{weather_data['condition']}.png",
-                "description": f"{weather_data['condition']} weather with {weather_data['wind']} km/h winds"
-                }
-        }
-        return render(request, 'weather_detail.html', context)
 
                 

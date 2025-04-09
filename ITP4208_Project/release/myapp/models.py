@@ -9,7 +9,7 @@ class YearSunUpDown:
         return response["data"]
 
 
-class loaction:
+class Loaction:
     def get_weather_data():
         wether_loc_data = {
         "loc_name_list": 
@@ -220,6 +220,5 @@ class Location(models.Model):
 
 class WeatherBoard(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    locations = models.ManyToManyField(Location)  # 多对多关系
-    created_at = models.DateTimeField(auto_now_add=True)
+    locations = models.ManyToManyField(Location,null=False)  # 多对多关系
         

@@ -13,11 +13,8 @@
   <script>
     $(document).ready(function() {
       window.showWeather = function(district) {
-        // Get weather data from hidden div
         const data = $(`#${district}-data`).data();
         
-        // Prepare detail data object matching weather_detail.html structure
-        // Determine weather condition based on rainfall
         let condition = 'Sunny';
         let alertMsg = 'No alerts';
         let alertClass = 'alert-info';
@@ -83,29 +80,6 @@
         </div>
       </div>
       {% endfor %}
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="weatherTitle"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="weather-details text-center">
-            <p><strong>Rain:</strong> <span id="rainfall"></span> mm</p>
-            <p><strong>Humi:</strong> <span id="humidity"></span>%</p>
-            <p><strong>Wind:</strong> <span id="wind"></span> km/h</p>
-            <p><strong>Temp:</strong> <span id="temp"></span>°C</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
   </div>
   {% endblock content %}

@@ -40,12 +40,13 @@ def airplane_information(request, date, way, *args):
 
 def home_view(request):
         template = loader.get_template('home.html')
-        context = loaction.get_weather_data()
+        context = Loaction.get_weather_data()
         return HttpResponse(template.render(context, request))
 
 
 def weather_detail_view(request, district):
-        loc_name_list = loaction.get_weather_data()["loc_name_list"]
+        loc_name_list = Loaction.get_weather_data()["loc_name_list"]
+        # Singal row for loop 
         weather_data = next(item for item in loc_name_list if item["loc_eng"].lower() == district.lower())
         context = {
                 "weather": {
@@ -81,19 +82,26 @@ class DeleteWeatherData(DeleteView):
 
         def get_success_url(self):
                 return reverse('days_forecast')
-        
 
 class CreateWeatherBoard(CreateView):
     model = WeatherBoard
     form_class = WeatherBoardForm  # 使用正确的表单
     template_name = 'create_weather_board.html'
-    success_url = '/myboard/'
+    success_url = '/myboards/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user  # 设置用户
         return super().form_valid(form)  # 自动保存多选数据
-                
-            
+
+
+class ViewWeatherBoard(ListView):
+        queryset = WeatherBoard.objects.all()
+        template_name = 'myboard.html'
+
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                context.update(Loaction.get_weather_data())
+                return context
 
 class DeleteWeatherBoard(DeleteView):
         model = WeatherBoard

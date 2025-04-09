@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{%  block content %}
+    <div class="card container mt-4 text-center">
+        <div class="card-body text-bg-warning">
+            <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.non_fields_errors }}
+            <div class="fieldWrapper">
+                Are you sure you want to delete?
+            </div>
+            <br>
+            <button type="submit" class="btn btn-info"> DELETE </button>
+            </form>
+        </div>
+        
+    </div>
+{% endblock content %}
+

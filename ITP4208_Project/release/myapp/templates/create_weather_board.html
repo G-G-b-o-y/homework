@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
+    {% if request.user.is_authenticated %}
     <form method="post">
         {% csrf_token %}
         <div>
@@ -20,5 +21,10 @@
             <button class="btn btn-primary" type="submit">CREATE</button>
         </div>
     </form>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        Please <a href="/login">Login</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

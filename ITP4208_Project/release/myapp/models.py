@@ -220,5 +220,5 @@ class Location(models.Model):
 
 class WeatherBoard(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    locations = models.ManyToManyField(Location,null=False)  # 多对多关系
+    locations = models.ManyToManyField(Location,null=False)
         

@@ -8,6 +8,6 @@ class WeatherBoardForm(forms.ModelForm):
         
     locations = forms.ModelMultipleChoiceField(
         queryset=Location.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # 使用复选框
+        widget=forms.CheckboxSelectMultiple,  # check box
         required=False
     )

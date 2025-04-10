@@ -102,10 +102,9 @@ class ViewWeatherBoard(ListView):
                 context.update(Loaction.get_weather_data())
                 return context
 
-def deleteProductByIdList(request, weatherboard_id):
-        mod = WeatherBoard.objects
-        mod.get(id=weatherboard_id).delete()
-        return reverse('myboards')
+def deleteProductByIdList(request, weatherboard_id:int):
+        WeatherBoard.objects.get(id=weatherboard_id).delete()
+        return HttpResponseRedirect(reverse('myboards'))
 
 
 

@@ -4,7 +4,9 @@
     <form method="post">
         {% csrf_token %}
         <div>
-            <label>Location:</label>
+            <div class="alert alert-primary" role="alert">
+                Please select the district you are interested:
+            </div>
             <ul class="list-group">
             {% for location in form.locations %}
                 <li class="list-group-item">

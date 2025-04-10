@@ -27,7 +27,7 @@ def get_server_datetime(request):
         return JsonResponse(time_dict)
 
 # get airplane data 
-# bug
+# index bug
 def airplane_information(request, date, way, *args):
         if way=="arrival":
                arrival="true"
@@ -84,15 +84,14 @@ class DeleteWeatherData(DeleteView):
                 return reverse('days_forecast')
 
 class CreateWeatherBoard(CreateView):
-    model = WeatherBoard
-    form_class = WeatherBoardForm  # 使用正确的表单
-    template_name = 'create_weather_board.html'
-    success_url = '/myboards/'
+        model = WeatherBoard
+        form_class = WeatherBoardForm
+        template_name = 'create_weather_board.html'
+        success_url = '/myboards/'
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user  # 设置用户
-        return super().form_valid(form)  # 自动保存多选数据
-
+        def form_valid(self, form):
+                form.instance.user = self.request.user
+                return super().form_valid(form)
 
 class ViewWeatherBoard(ListView):
         queryset = WeatherBoard.objects.all()
@@ -103,12 +102,11 @@ class ViewWeatherBoard(ListView):
                 context.update(Loaction.get_weather_data())
                 return context
 
-class DeleteWeatherBoard(DeleteView):
-        model = WeatherBoard
-        template_name = 'delete_weather_board.html'
+def deleteProductByIdList(request, weatherboard_id):
+        mod = WeatherBoard.objects
+        mod.get(id=weatherboard_id).delete()
+        return reverse('myboards')
 
-        def get_success_url(self):
-                return reverse('deleteBoard')
 
 
                 

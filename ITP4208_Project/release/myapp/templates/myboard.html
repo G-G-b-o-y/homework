@@ -3,7 +3,6 @@
 {% load static %}
 <div class="p-5 rounded">
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 g-1">
-
         {% for board in object_list %}
         <div class="col">
             <div class="card shadow-sm">
@@ -37,13 +36,18 @@
                         </div>
                         </p>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"
-                                onclick="window.location.href = '/deleteWeatherBoard/{{ board.id }}';">Delete</button>
+                            <a href='{% url "deleteBoard" board.id %}'
+                                class="btn btn-danger btn-sm w-100">
+                                Delete
+                            </a>
                         </div>
                         <small class="text-body-secondary"></small>
                     </div>
                 </div>
             </div>
+        </div>{% empty %}
+        <div class="alert alert-primary" role="alert">
+            You haven't created any boards yet, go <a href="/createWeatherBoard">create them</a> now!
         </div>
         {% endfor %}
 

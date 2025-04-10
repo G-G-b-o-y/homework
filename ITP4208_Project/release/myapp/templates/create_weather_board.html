@@ -1,35 +1,22 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container mt-4">
-    <h2>创建天气看板</h2>
-    
     <form method="post">
         {% csrf_token %}
         <div>
-            <label>选择位置（可多选）:</label>
+            <label>Location:</label>
+            <ul class="list-group">
             {% for location in form.locations %}
-                <div>
-                    {{ location.tag }}  <!-- 复选框 -->
-                    <label for="{{ location.id_for_label }}">{{ location.choice_label }}</label>
-                </div>
+                <li class="list-group-item">
+                    {{ location.tag }}
+                    <label class="form-check-label stretched-link" for="{{ location.id_for_label }}">{{ location.choice_label }}</label>
+                </li>
             {% endfor %}
+            </ul>
         </div>
-        <button type="submit">提交</button>
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="submit">CREATE</button>
+        </div>
     </form>
 </div>
-
-<style>
-    .location-options {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .location-options div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-</style>
 {% endblock %}

@@ -30,7 +30,7 @@ urlpatterns = [
 
     url(r'^createWeatherBoard/$', CreateWeatherBoard.as_view(template_name='create_weather_board.html'), name='createBoard'),
     url(r'^myboards/$', ViewWeatherBoard.as_view(), name='home'),
-    url(r'^deleteWeatherBoard/(?P<pk>\d)/$', DeleteWeatherBoard.as_view(), name='deleteBoard'),
+    url(r'^deleteWeatherBoard/(\d+)/$', deleteProductByIdList, name='deleteBoard'),
     
     url(r'^weather/sun/?$', get_sun),
     url(r'^weather/clock/$', get_server_datetime),

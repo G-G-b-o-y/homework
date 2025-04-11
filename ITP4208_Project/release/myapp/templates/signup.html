@@ -60,7 +60,7 @@
 			</div>
 			<br>
 			<div class="form-check">
-				<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+				<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
 				<label class="form-check-label" for="flexCheckDefault">
 					You have read and agree to our Terms of Service and Privacy Policy.
 				</label>
@@ -96,7 +96,7 @@
 </div>
 <script>
 	function confirmReset() {
-		$("#signForm").reset();
+		document.getElementById('signForm').reset(); 
 	}
 </script>
 {% endblock content %}

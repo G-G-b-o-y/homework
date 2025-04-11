@@ -93,9 +93,11 @@ class CreateWeatherBoard(CreateView):
                 form.instance.user = self.request.user
                 return super().form_valid(form)
 
-class ViewWeatherBoard(ListView):
-        queryset = WeatherBoard.objects.all()
+class ViewWeatherBoard(LoginRequiredMixin, ListView):
         template_name = 'myboard.html'
+
+        def get_queryset(self):
+                return WeatherBoard.objects.filter(user=self.request.user)
 
         def get_context_data(self, **kwargs):
                 context = super().get_context_data(**kwargs)

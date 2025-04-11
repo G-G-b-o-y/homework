@@ -1,0 +1,66 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0" version="26.1.2">
+  <diagram name="第 1 页" id="5bKLqXM7aUAxzs9We8PO">
+    <mxGraphModel dx="570" dy="767" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MloKvIPFbC10VM_HKt19-5" value="HKO&amp;nbsp;&lt;div&gt;OPEN DATA&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="127" y="-16" width="57" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-27" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="MloKvIPFbC10VM_HKt19-10" target="MloKvIPFbC10VM_HKt19-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-10" value="&lt;span style=&quot;font-size:12.0pt;mso-bidi-font-size:&lt;br/&gt;11.0pt;font-family:&amp;quot;Calibri&amp;quot;,sans-serif;mso-ascii-theme-font:minor-latin;&lt;br/&gt;mso-fareast-font-family:等线;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&lt;br/&gt;&amp;quot;Times New Roman&amp;quot;;mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-HK;&lt;br/&gt;mso-fareast-language:ZH-CN;mso-bidi-language:AR-SA&quot; lang=&quot;EN-HK&quot;&gt;Airport Authority Hong Kong&lt;/span&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="210" y="-38" width="69" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-16" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+          <mxGeometry x="3" y="133" width="283" height="237" as="geometry">
+            <mxRectangle x="207" y="173" width="50" height="44" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-41" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="MloKvIPFbC10VM_HKt19-16" source="MloKvIPFbC10VM_HKt19-17" target="MloKvIPFbC10VM_HKt19-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-17" value="urls.py" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="MloKvIPFbC10VM_HKt19-16">
+          <mxGeometry x="168" y="180" width="77" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="MloKvIPFbC10VM_HKt19-16" source="MloKvIPFbC10VM_HKt19-22" target="MloKvIPFbC10VM_HKt19-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-22" value="models.py" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="MloKvIPFbC10VM_HKt19-16">
+          <mxGeometry x="135" width="143" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-24" value="SQLite" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="MloKvIPFbC10VM_HKt19-16">
+          <mxGeometry x="16" y="11" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-28" value="templates" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="MloKvIPFbC10VM_HKt19-16">
+          <mxGeometry x="16" y="147" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-29" value="views&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;.py&lt;/span&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="MloKvIPFbC10VM_HKt19-16">
+          <mxGeometry x="168" y="107" width="77" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-31" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0;entryDx=0;entryDy=52.5;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="MloKvIPFbC10VM_HKt19-16" source="MloKvIPFbC10VM_HKt19-29" target="MloKvIPFbC10VM_HKt19-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-40" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=27.5;exitPerimeter=0;" edge="1" parent="MloKvIPFbC10VM_HKt19-16" source="MloKvIPFbC10VM_HKt19-24" target="MloKvIPFbC10VM_HKt19-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="70" y="121" as="sourcePoint" />
+            <mxPoint x="120" y="71" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-18" value="Server" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="17" y="103" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.124;entryY=-0.013;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="MloKvIPFbC10VM_HKt19-5" target="MloKvIPFbC10VM_HKt19-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-26" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="MloKvIPFbC10VM_HKt19-25" target="MloKvIPFbC10VM_HKt19-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MloKvIPFbC10VM_HKt19-25" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Client&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="149.5" y="481" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
